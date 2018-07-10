@@ -15,14 +15,12 @@ import projetJava.modele.Modele;
  */
 public class ProjetJava extends Application {
     
-    public static String screenClasse = "ajout";
-    public static String screenClasseFile = "ajout.fxml";
+   
     
     public static String screenAccueil = "accueil";
     public static String screenAccueilFile = "accueil.fxml";
     
-    public static String screenEnseignant = "enseignant";
-    public static String screenEnseignantFile = "enseignant.fxml";
+    
     
     
     
@@ -33,9 +31,9 @@ public class ProjetJava extends Application {
         
         
         //charge en mémoire les écrans
-        mainContainer.loadScreen(ProjetJava.screenClasse, ProjetJava.screenClasseFile);
+        
         mainContainer.loadScreen(ProjetJava.screenAccueil, ProjetJava.screenAccueilFile);
-        mainContainer.loadScreen(ProjetJava.screenEnseignant, ProjetJava.screenEnseignantFile);
+        
         
         //premier ecran
         mainContainer.setScreen(ProjetJava.screenAccueil);
