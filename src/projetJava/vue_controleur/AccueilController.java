@@ -23,7 +23,19 @@ public class AccueilController implements ControlledScreen {
     private Modele modele;
     
     
+    @FXML
+    public void screenClasse() {
+        Modele modele = Modele.getInstance();
+        this.controleurParent.setModForControl(modele);
+        this.controleurParent.setScreen(ProjetJava.screenClasse);
+    }
     
+    @FXML
+    public void screenEnseignant() {
+        Modele modele = Modele.getInstance();
+        this.controleurParent.setModForControl(modele);
+        this.controleurParent.setScreen(ProjetJava.screenEnseignant);
+    }
     
     
     

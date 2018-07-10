@@ -18,7 +18,6 @@ import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import projetJava.modele.Modele;
-import projetJava.vue_controleur.ControlledScreen;
 
 /**
  *
