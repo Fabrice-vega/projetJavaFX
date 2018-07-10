@@ -46,7 +46,7 @@ public class EnseignantController implements ControlledScreen {
     
     @FXML
     public void screenAccueil() {
-        controleurParent.setScreen(ProjetJava.screenAccueil);
+        controleurParent.setScreen(projetJava.ProjetJava.screenAccueil);
     }
     
     @FXML
