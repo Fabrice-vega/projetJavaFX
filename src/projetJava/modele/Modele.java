@@ -31,6 +31,7 @@ public class Modele {
 
     private Modele() {
         this.mesClasses = new ArrayList<>();
+        this.mesEnseignants = new ArrayList<>();
     }
     
     public void ajoutClasses(Classes classe) {
