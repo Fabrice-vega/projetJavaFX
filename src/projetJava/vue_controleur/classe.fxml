@@ -6,6 +6,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetJava.vue_controleur.AjoutController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@../resource/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetJava.vue_controleur.ClasseController">
    <children>
       <TabPane layoutX="79.0" layoutY="23.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -89,6 +91,17 @@
                         </TextField>
                      </children>
                   </GridPane>
+               </content>
+            </Tab>
+            <Tab onSelectionChanged="#actualiser" text="Modif / Suppression">
+               <content>
+                  <TableView fx:id="classeTable" onKeyReleased="#updateOrDelete" onSort="#updateOrDelete" prefHeight="200.0" prefWidth="200.0" stylesheets="@../resource/style.css">
+                    <columns>
+                      <TableColumn fx:id="sigleColonne" prefWidth="200.0" resizable="false" text="Sigle" />
+                      <TableColumn fx:id="orientationColonne" prefWidth="200.0" resizable="false" text="Orientation" />
+                        <TableColumn fx:id="anneeColonne" prefWidth="200.0" resizable="false" text="Année" />
+                    </columns>
+                  </TableView>
                </content>
             </Tab>
         </tabs>

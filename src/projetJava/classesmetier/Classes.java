@@ -42,17 +42,17 @@ public class Classes {
         private SimpleIntegerProperty annee;
 
         public ClasseBuilder setSigle(String sigle) {
-            this.sigle.set(sigle);
+            this.sigle = new SimpleStringProperty(sigle);
             return this;
         }
 
         public ClasseBuilder setOrientation(String orientation) {
-            this.orientation.set(orientation);
+            this.orientation = new SimpleStringProperty(orientation);
             return this;
         }
 
         public ClasseBuilder setAnnee(int annee) {
-            this.annee.set(annee);
+            this.annee = new SimpleIntegerProperty(annee);
             return this;
         }
         
@@ -72,6 +72,10 @@ public class Classes {
     public String getSigle() {
         return sigle.get();
     }
+    
+    public SimpleStringProperty sigleProperty() {
+        return sigle;
+    }
 
     public void setSigle(String sigle) {
         this.sigle.set(sigle);
@@ -80,6 +84,10 @@ public class Classes {
     public String getOrientation() {
         return orientation.get();
     }
+    
+    public SimpleStringProperty orientationProperty() {
+        return orientation;
+    }
 
     public void setOrientation(String orientation) {
         this.orientation.set(orientation);
@@ -87,6 +95,10 @@ public class Classes {
 
     public int getAnnee() {
         return annee.get();
+    }
+    
+    public SimpleIntegerProperty anneeProperty() {
+        return annee;
     }
 
     public void setAnnee(int annee) {
@@ -101,5 +113,6 @@ public class Classes {
                 ( annee != null ? annee.get() : 0) 
                 + '}';
     }
+ 
     
 }

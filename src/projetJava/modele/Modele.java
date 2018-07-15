@@ -38,6 +38,10 @@ public class Modele {
         mesClasses.add(classe);
     }
     
+    public void supClasses(Classes classe) {
+        mesClasses.remove(classe);
+    }
+    
     public List<Classes> getClasses() {
         return mesClasses;
     }

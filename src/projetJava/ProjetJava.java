@@ -15,8 +15,8 @@ import projetJava.modele.Modele;
  */
 public class ProjetJava extends Application {
     
-    public static String screenClasse = "ajout";
-    public static String screenClasseFile = "ajout.fxml";
+    public static String screenClasse = "classe";
+    public static String screenClasseFile = "classe.fxml";
     
     public static String screenAccueil = "accueil";
     public static String screenAccueilFile = "accueil.fxml";

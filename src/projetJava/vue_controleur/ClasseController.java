@@ -7,10 +7,18 @@ package projetJava.vue_controleur;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import projetJava.ProjetJava;
 import projetJava.classesmetier.Classes;
 import projetJava.modele.Modele;
@@ -20,13 +28,24 @@ import projetJava.modele.Modele;
  *
  * @author Fabrice
  */
-public class AjoutController implements ControlledScreen {
+public class ClasseController implements ControlledScreen {
 
     private ScreensController controleurParent;
     private Modele modele;
     
+    private ObservableList<Classes> classesObservableList = FXCollections.observableArrayList();
+    
     @FXML
     TextField txtOrientation, txtAnnee;
+    
+    @FXML
+    TableView<Classes> classeTable;
+    
+    @FXML
+    TableColumn<Classes, String> sigleColonne, orientationColonne;
+    
+    @FXML
+    TableColumn<Classes, Integer> anneeColonne;
     
     @Override
     public void setScreenParent(ScreensController screenPage) {
@@ -78,6 +97,33 @@ public class AjoutController implements ControlledScreen {
     public void annuler() {
         txtOrientation.setText("");
         txtAnnee.setText("");
+    }
+    
+    @FXML
+    public void updateOrDelete(KeyEvent keyevent) {
+        if (keyevent.getCode() == KeyCode.DELETE && classeTable.getSelectionModel().getSelectedItem() != null) {
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer : " + classeTable.getSelectionModel().getSelectedItem() + "?", ButtonType.YES, ButtonType.NO);
+            confirmation.setHeaderText("Demande de suppression");
+            confirmation.showAndWait();
+            if( confirmation.getResult() == ButtonType.YES ) {
+                Alert suppression = new Alert(Alert.AlertType.INFORMATION);
+                suppression.setHeaderText("suppression");
+                Classes classe = classeTable.getSelectionModel().getSelectedItem();
+                modele.supClasses(classe);
+                suppression.show();
+                actualiser();
+            }
+        }
+    }
+    
+    @FXML
+    public void actualiser() {
+        classesObservableList.clear();
+        classesObservableList.addAll(modele.getClasses());
+        sigleColonne.setCellValueFactory(new PropertyValueFactory<Classes, String>("sigle"));
+        orientationColonne.setCellValueFactory(new PropertyValueFactory<Classes, String>("orientation"));
+        anneeColonne.setCellValueFactory(new PropertyValueFactory<Classes, Integer>("annee"));
+        classeTable.setItems(classesObservableList);
     }
 
     @FXML
