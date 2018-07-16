@@ -74,7 +74,6 @@ public class ClasseController implements ControlledScreen {
             Alert alertInt = new Alert(Alert.AlertType.INFORMATION,"Ajout effectué");
             alertInt.setTitle("Ajout !");
             alertInt.show();
-            
             annuler();
             
         } catch ( NumberFormatException nfe) {
@@ -136,6 +135,25 @@ public class ClasseController implements ControlledScreen {
         Modele modele = Modele.getInstance();
         this.controleurParent.setModForControl(modele);
         this.controleurParent.setScreen(ProjetJava.screenEnseignant);
+    }
+    
+    @FXML
+    public void delTot() {
+        
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Souhaitez vous tout supprimer ?", ButtonType.YES, ButtonType.NO);
+        confirmation.setHeaderText("Demande de suppression");
+        confirmation.showAndWait();
+        if ( confirmation.getResult() == ButtonType.YES ) {
+            confirmation = new Alert(Alert.AlertType.CONFIRMATION, "êtes vous vraiment sûr ?", ButtonType.YES, ButtonType.NO);
+            confirmation.setHeaderText("Sûr et certain ?");
+            confirmation.showAndWait();
+            if ( confirmation.getResult() == ButtonType.YES ) {
+                Alert suppression = new Alert(Alert.AlertType.INFORMATION);
+                suppression.setHeaderText("suppression");
+                modele.supClassesTot();
+                classesObservableList.clear();
+            }
+        }
     }
     
     }    

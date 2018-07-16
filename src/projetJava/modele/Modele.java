@@ -42,6 +42,10 @@ public class Modele {
         mesClasses.remove(classe);
     }
     
+    public void supClassesTot() {
+    mesClasses.removeAll(mesClasses);
+    }
+    
     public List<Classes> getClasses() {
         return mesClasses;
     }
@@ -52,6 +56,10 @@ public class Modele {
 
     public void supEnseignants(Enseignant enseignant) {
         mesEnseignants.remove(enseignant);
+    }
+    
+    public void supEnseignantsTot() {
+    mesEnseignants.removeAll(mesEnseignants);
     }
     
     public List<Enseignant> getMesEnseignants() {
