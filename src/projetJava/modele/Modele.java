@@ -50,6 +50,10 @@ public class Modele {
         mesEnseignants.add(enseignant);
     }
 
+    public void supEnseignants(Enseignant enseignant) {
+        mesEnseignants.remove(enseignant);
+    }
+    
     public List<Enseignant> getMesEnseignants() {
         return mesEnseignants;
     }

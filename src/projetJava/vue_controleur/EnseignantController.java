@@ -7,10 +7,18 @@ package projetJava.vue_controleur;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import projetJava.ProjetJava;
 import projetJava.classesmetier.Enseignant;
 import projetJava.modele.Modele;
@@ -25,8 +33,16 @@ public class EnseignantController implements ControlledScreen {
     private ScreensController controleurParent;
     private Modele modele;
     
+    private ObservableList<Enseignant> enseignantObservablelist = FXCollections.observableArrayList();
+    
     @FXML
     TextField txtPrenom,txtNom;
+    
+    @FXML
+    TableView<Enseignant> enseignantTable;
+    
+    @FXML
+    TableColumn<Enseignant, String> id_profColonne, nomColonne, prenomColonne;
 
     @Override
     public void setScreenParent(ScreensController screenPage) {
@@ -78,6 +94,33 @@ public class EnseignantController implements ControlledScreen {
             alertInt.setTitle("Erreur");
             alertInt.show();
             annuler();
+        }
+    }
+    
+    @FXML
+    public void actualiser() {
+        enseignantObservablelist.clear();
+        enseignantObservablelist.addAll(modele.getMesEnseignants());
+        id_profColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("id_prof"));
+        nomColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("nom"));
+        prenomColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("prenom"));
+        enseignantTable.setItems(enseignantObservablelist);
+    }
+    
+    @FXML
+    public void updateOrDelete(KeyEvent keyevent) {
+        if(keyevent.getCode() == KeyCode.DELETE && enseignantTable.getSelectionModel().getSelectedItem() != null) {
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer : " + enseignantTable.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO);
+            confirmation.setHeaderText("Demande de suppression");
+            confirmation.showAndWait();
+            if (confirmation.getResult() == ButtonType.YES) {
+                Alert suppression = new Alert (Alert.AlertType.INFORMATION);
+                suppression.setHeaderText("suppression");
+                Enseignant enseignant = enseignantTable.getSelectionModel().getSelectedItem();
+                modele.supEnseignants(enseignant);
+                suppression.show();
+                actualiser();
+            }
         }
     }
 }

@@ -6,6 +6,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -92,6 +94,17 @@
                         <Label text="Prénom :" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                      </children>
                   </GridPane>
+               </content>
+            </Tab>
+            <Tab onSelectionChanged="#actualiser" text="Modif / Sup">
+               <content>
+                  <TableView fx:id="enseignantTable" onKeyReleased="#updateOrDelete" onSort="#updateOrDelete" prefHeight="200.0" prefWidth="200.0" stylesheets="@../resource/style.css">
+                    <columns>
+                      <TableColumn fx:id="id_profColonne" prefWidth="200.0" resizable="false" text="Id du professeur" />
+                      <TableColumn fx:id="nomColonne" prefWidth="200.0" resizable="false" text="Nom" />
+                        <TableColumn fx:id="prenomColonne" prefWidth="200.0" resizable="false" text="Prénom" />
+                    </columns>
+                  </TableView>
                </content>
             </Tab>
         </tabs>
