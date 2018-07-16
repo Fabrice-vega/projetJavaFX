@@ -17,25 +17,11 @@ import projetJava.modele.Modele;
  *
  * @author Fabrice
  */
-public class AccueilController implements ControlledScreen {
+public class PrincipalController implements ControlledScreen {
 
     private ScreensController controleurParent;
-    private Modele modele;
-    
-    
-    @FXML
-    public void screenClasse() {
-        this.controleurParent.setScreen(ProjetJava.screenClasse);
-    }
-    
-    @FXML
-    public void screenEnseignant() {
-        this.controleurParent.setScreen(ProjetJava.screenEnseignant);
-    }
-    
-    
-    
-    
+    private Modele modele; 
+
     @Override
     public void setScreenParent(ScreensController screenPage) {
         this.controleurParent = screenPage;
@@ -44,6 +30,13 @@ public class AccueilController implements ControlledScreen {
     @Override
     public void setModele(Modele modele) {
         this.modele = modele;
+    }
+    
+    @FXML
+    public void screenAccueil() {
+        Modele modele = Modele.getInstance();
+        this.controleurParent.setModForControl(modele);
+        this.controleurParent.setScreen(ProjetJava.screenAccueil);
     }
     
 }

@@ -15,6 +15,9 @@ import projetJava.modele.Modele;
  */
 public class ProjetJava extends Application {
     
+    public static String screenPrincipal = "principal";
+    public static String screenPrincipalFile = "principal.fxml";
+    
     public static String screenClasse = "classe";
     public static String screenClasseFile = "classe.fxml";
     
@@ -36,9 +39,10 @@ public class ProjetJava extends Application {
         mainContainer.loadScreen(ProjetJava.screenClasse, ProjetJava.screenClasseFile);
         mainContainer.loadScreen(ProjetJava.screenAccueil, ProjetJava.screenAccueilFile);
         mainContainer.loadScreen(ProjetJava.screenEnseignant, ProjetJava.screenEnseignantFile);
+        mainContainer.loadScreen(ProjetJava.screenPrincipal, ProjetJava.screenPrincipalFile);
         
         //premier ecran
-        mainContainer.setScreen(ProjetJava.screenAccueil);
+        mainContainer.setScreen(ProjetJava.screenPrincipal);
         
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
