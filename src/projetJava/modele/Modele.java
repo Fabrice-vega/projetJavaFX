@@ -71,6 +71,11 @@ public class Modele {
         return mesEnseignants;
     }
 
+    public void modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
+        int index = mesEnseignants.indexOf(ancEnseignant);
+        mesEnseignants.set(index, nouvEnseignant);
+    }
+
     
     
     

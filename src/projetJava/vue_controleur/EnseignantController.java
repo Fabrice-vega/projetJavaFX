@@ -36,7 +36,7 @@ public class EnseignantController implements ControlledScreen {
     private ObservableList<Enseignant> enseignantObservablelist = FXCollections.observableArrayList();
     
     @FXML
-    TextField txtPrenom,txtNom;
+    TextField txtPrenom,txtNom, txtPrenomModif, txtNomModif;
     
     @FXML
     TableView<Enseignant> enseignantTable;
@@ -55,21 +55,18 @@ public class EnseignantController implements ControlledScreen {
     }
     
     @FXML
-    public void annuler() {
-        txtNom.setText("");
-        txtPrenom.setText("");
-    }
-    
-    @FXML
     public void screenAccueil() {
         controleurParent.setScreen(projetJava.ProjetJava.screenAccueil);
     }
     
     @FXML
     public void screenClasse() {
-        Modele modele = Modele.getInstance();
-        this.controleurParent.setModForControl(modele);
         this.controleurParent.setScreen(ProjetJava.screenClasse);
+    }
+    
+    @FXML
+    public void screenAttribution() {
+        
     }
     
     @FXML
@@ -100,17 +97,38 @@ public class EnseignantController implements ControlledScreen {
     }
     
     @FXML
-    public void actualiser() {
-        enseignantObservablelist.clear();
-        enseignantObservablelist.addAll(modele.getMesEnseignants());
-        id_profColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("id_prof"));
-        nomColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("nom"));
-        prenomColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("prenom"));
-        enseignantTable.setItems(enseignantObservablelist);
+    public void modification() {
+        if(enseignantTable.getSelectionModel().getSelectedItem() != null) {
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Modifier : " + enseignantTable.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO);
+            confirmation.setHeaderText("Demande de modification");
+            confirmation.showAndWait();
+            if( confirmation.getResult() == ButtonType.YES ) {
+                String nom = txtNomModif.getText().toUpperCase();
+                String prenom = txtPrenomModif.getText().toUpperCase();
+                try {
+                    String id_prof = nom.substring(0,2) + prenom.substring(0,2);
+                    Enseignant.EnseignantBuilder enseignantBuilder = new Enseignant.EnseignantBuilder().setId_prof(id_prof).setNom(nom).setPrenom(prenom);
+                    Enseignant enseignantModif = enseignantBuilder.build();
+                    modele.modifEnseignant(enseignantTable.getSelectionModel().getSelectedItem(),enseignantModif);
+                    Alert alertModif = new Alert(Alert.AlertType.INFORMATION,"Modification effectué");
+                    alertModif.setTitle("Modification !");
+                    alertModif.show();
+                    annuler();
+                    actualiser();
+                    
+                }catch (Exception e) {
+                    Alert alertInt = new Alert(Alert.AlertType.ERROR,"Erreur lors de la modification");
+                    alertInt.setHeaderText("Erreur de modification");
+                    alertInt.setTitle("Erreur");
+                    alertInt.show();
+                    annuler();
+                }   
+            }
+        }
     }
     
     @FXML
-    public void updateOrDelete(KeyEvent keyevent) {
+    public void suppression(KeyEvent keyevent) {
         if(keyevent.getCode() == KeyCode.DELETE && enseignantTable.getSelectionModel().getSelectedItem() != null) {
             Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer : " + enseignantTable.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO);
             confirmation.setHeaderText("Demande de suppression");
@@ -143,5 +161,23 @@ public class EnseignantController implements ControlledScreen {
                 enseignantObservablelist.clear();
             }
         }
+    }
+    
+    @FXML
+    public void actualiser() {
+        enseignantObservablelist.clear();
+        enseignantObservablelist.addAll(modele.getMesEnseignants());
+        id_profColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("id_prof"));
+        nomColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("nom"));
+        prenomColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("prenom"));
+        enseignantTable.setItems(enseignantObservablelist);
+    }
+    
+    @FXML
+    public void annuler() {
+        txtNom.setText("");
+        txtNomModif.setText("");
+        txtPrenom.setText("");
+        txtPrenomModif.setText("");
     }
 }
