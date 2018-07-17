@@ -33,6 +33,10 @@ public class AccueilController implements ControlledScreen {
         this.controleurParent.setScreen(ProjetJava.screenEnseignant);
     }
     
+    @FXML
+    public void screenPrincipal() {
+        this.controleurParent.setScreen(ProjetJava.screenPrincipal);
+    }
     
     
     

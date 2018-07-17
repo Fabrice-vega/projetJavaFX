@@ -50,6 +50,11 @@ public class Modele {
         return mesClasses;
     }
     
+    public void modifClasse(Classes ancClasse, Classes nouvClasse) {
+        int index = mesClasses.indexOf(ancClasse);
+        mesClasses.set(index, nouvClasse);
+    }
+    
     public void ajoutEnseignants(Enseignant enseignant) {
         mesEnseignants.add(enseignant);
     }
@@ -65,6 +70,8 @@ public class Modele {
     public List<Enseignant> getMesEnseignants() {
         return mesEnseignants;
     }
+
+    
     
     
 }

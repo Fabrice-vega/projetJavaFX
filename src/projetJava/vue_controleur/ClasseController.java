@@ -36,7 +36,7 @@ public class ClasseController implements ControlledScreen {
     private ObservableList<Classes> classesObservableList = FXCollections.observableArrayList();
     
     @FXML
-    TextField txtOrientation, txtAnnee;
+    TextField txtOrientation, txtAnnee, txtOrientationModif, txtAnneeModif;
     
     @FXML
     TableView<Classes> classeTable;
@@ -95,13 +95,17 @@ public class ClasseController implements ControlledScreen {
     @FXML
     public void annuler() {
         txtOrientation.setText("");
+        txtOrientationModif.setText("");
         txtAnnee.setText("");
+        txtAnneeModif.setText("");
+        
+        
     }
     
     @FXML
-    public void updateOrDelete(KeyEvent keyevent) {
+    public void suppression(KeyEvent keyevent) {
         if (keyevent.getCode() == KeyCode.DELETE && classeTable.getSelectionModel().getSelectedItem() != null) {
-            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer : " + classeTable.getSelectionModel().getSelectedItem() + "?", ButtonType.YES, ButtonType.NO);
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer : " + classeTable.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO);
             confirmation.setHeaderText("Demande de suppression");
             confirmation.showAndWait();
             if( confirmation.getResult() == ButtonType.YES ) {
@@ -111,6 +115,45 @@ public class ClasseController implements ControlledScreen {
                 modele.supClasses(classe);
                 suppression.show();
                 actualiser();
+            }
+        }
+    }
+    
+    @FXML
+    public void modification() {
+        if(classeTable.getSelectionModel().getSelectedItem() != null) {
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Modifier : " + classeTable.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO);
+            confirmation.setHeaderText("Demande de modification");
+            confirmation.showAndWait();
+            if( confirmation.getResult() == ButtonType.YES ) {
+                String orientation = txtOrientationModif.getText().toUpperCase();
+                String anneeString = txtAnneeModif.getText();
+                try {
+                    String sigle = anneeString + orientation.charAt(0);
+                    int annee = Integer.parseInt(anneeString);
+                    Classes.ClasseBuilder classeBuilder = new Classes.ClasseBuilder().setSigle(sigle).setOrientation(orientation).setAnnee(annee);
+                    Classes classeModif = classeBuilder.build();
+                    modele.modifClasse(classeTable.getSelectionModel().getSelectedItem(), classeModif);
+                    Alert alertModif = new Alert(Alert.AlertType.INFORMATION,"modification effectué");
+                    alertModif.setTitle("Modification !");
+                    alertModif.show();
+                    annuler();
+                    actualiser();
+                    
+                } catch ( NumberFormatException nfe) {
+                    Alert alertInt = new Alert(Alert.AlertType.ERROR,"Année doit être un chiffre");
+                    alertInt.setHeaderText("Erreur champ année");
+                    alertInt.setTitle("Erreur");
+                    alertInt.show();
+                    txtAnneeModif.setText("");
+                    
+                } catch ( Exception e) {
+                    Alert alertInt = new Alert(Alert.AlertType.ERROR,"Erreur lors de la modification");
+                    alertInt.setHeaderText("Erreur de modification");
+                    alertInt.setTitle("Erreur");
+                    alertInt.show();
+                    annuler();
+                }
             }
         }
     }

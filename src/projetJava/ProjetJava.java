@@ -6,6 +6,7 @@ import projetJava.vue_controleur.ScreensController;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import projetJava.modele.Modele;
 
@@ -27,8 +28,6 @@ public class ProjetJava extends Application {
     public static String screenEnseignant = "enseignant";
     public static String screenEnseignantFile = "enseignant.fxml";
     
-    
-    
     @Override
     public void start(Stage primaryStage) {
         
@@ -47,6 +46,9 @@ public class ProjetJava extends Application {
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
         Scene scene = new Scene(root);
+        primaryStage.setTitle("Projet Java");
+        primaryStage.getIcons().add(new Image("https://thierrymarique.condorcet.be/img/logo_condorcet_transparent_80.png", 300, 300, false, false));
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
