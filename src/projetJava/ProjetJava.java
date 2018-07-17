@@ -28,6 +28,9 @@ public class ProjetJava extends Application {
     public static String screenEnseignant = "enseignant";
     public static String screenEnseignantFile = "enseignant.fxml";
     
+    public static String screenAttribution = "attribution";
+    public static String screenAttributionFile = "attribution.fxml";
+    
     @Override
     public void start(Stage primaryStage) {
         
@@ -39,6 +42,7 @@ public class ProjetJava extends Application {
         mainContainer.loadScreen(ProjetJava.screenAccueil, ProjetJava.screenAccueilFile);
         mainContainer.loadScreen(ProjetJava.screenEnseignant, ProjetJava.screenEnseignantFile);
         mainContainer.loadScreen(ProjetJava.screenPrincipal, ProjetJava.screenPrincipalFile);
+        mainContainer.loadScreen(ProjetJava.screenAttribution, ProjetJava.screenAttributionFile);
         
         //premier ecran
         mainContainer.setScreen(ProjetJava.screenPrincipal);

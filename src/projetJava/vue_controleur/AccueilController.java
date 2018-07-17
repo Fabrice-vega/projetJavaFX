@@ -7,6 +7,7 @@ package projetJava.vue_controleur;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import projetJava.ProjetJava;
@@ -22,6 +23,15 @@ public class AccueilController implements ControlledScreen {
     private ScreensController controleurParent;
     private Modele modele;
     
+    @Override
+    public void setScreenParent(ScreensController screenPage) {
+        this.controleurParent = screenPage;
+    }
+
+    @Override
+    public void setModele(Modele modele) {
+        this.modele = modele;
+    }
     
     @FXML
     public void screenClasse() {
@@ -38,16 +48,13 @@ public class AccueilController implements ControlledScreen {
         this.controleurParent.setScreen(ProjetJava.screenPrincipal);
     }
     
-    
-    
-    @Override
-    public void setScreenParent(ScreensController screenPage) {
-        this.controleurParent = screenPage;
-    }
-
-    @Override
-    public void setModele(Modele modele) {
-        this.modele = modele;
+    @FXML
+    public void screenAttribution() {
+        this.controleurParent.setScreen(ProjetJava.screenAttribution);
     }
     
+    @FXML
+    public void fermetureProgramme() {
+        Platform.exit();
+    }
 }

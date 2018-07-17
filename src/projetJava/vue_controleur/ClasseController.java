@@ -69,7 +69,7 @@ public class ClasseController implements ControlledScreen {
     
     @FXML
     public void screenAttribution() {
-        
+        this.controleurParent.setScreen(ProjetJava.screenAttribution);
     }
     
     @FXML

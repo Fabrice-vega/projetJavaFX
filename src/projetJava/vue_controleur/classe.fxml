@@ -40,7 +40,7 @@
                            <padding>
                               <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
                            </padding></Button>
-                        <Button mnemonicParsing="false" text="Attributions" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button mnemonicParsing="false" onAction="#screenAttribution" text="Attributions" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <padding>
                               <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
                            </padding>
