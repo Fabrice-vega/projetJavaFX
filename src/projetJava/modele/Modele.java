@@ -7,6 +7,7 @@ package projetJava.modele;
 
 import java.util.ArrayList;
 import java.util.List;
+import projetJava.classesmetier.Attribution;
 import projetJava.classesmetier.Classes;
 import projetJava.classesmetier.Enseignant;
 
@@ -17,6 +18,7 @@ import projetJava.classesmetier.Enseignant;
 public class Modele {
     private List<Classes> mesClasses;
     private List<Enseignant> mesEnseignants;
+    private List<Attribution>mesAttributions;
     
     private static Modele instance = null;
     public static Modele getInstance() {
@@ -32,6 +34,7 @@ public class Modele {
     private Modele() {
         this.mesClasses = new ArrayList<>();
         this.mesEnseignants = new ArrayList<>();
+        this.mesAttributions = new ArrayList<>();
     }
     
     public void ajoutClasses(Classes classe) {
@@ -74,6 +77,10 @@ public class Modele {
     public void modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
         int index = mesEnseignants.indexOf(ancEnseignant);
         mesEnseignants.set(index, nouvEnseignant);
+    }
+
+    public void ajoutAttribution(Attribution attribution) {
+        this.mesAttributions.add(attribution);
     }
 
     

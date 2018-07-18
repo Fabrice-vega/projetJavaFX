@@ -16,9 +16,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="fond_principal" stylesheets="@../resource/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetJava.vue_controleur.ClasseController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" styleClass="fond_principal" stylesheets="@../resource/style.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="projetJava.vue_controleur.ClasseController">
    <children>
-      <TabPane fx:id="cTabPane" layoutX="79.0" layoutY="23.0" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane fx:id="cTabPane" layoutX="79.0" layoutY="23.0" prefHeight="500.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
           <Tab text="Menus">
                <content>
@@ -118,9 +118,9 @@
                      <children>
                         <TableView fx:id="classeTable" onKeyReleased="#suppression" prefHeight="200.0" prefWidth="200.0" stylesheets="@../resource/style.css" GridPane.columnSpan="3" GridPane.rowSpan="2">
                           <columns>
-                            <TableColumn fx:id="sigleColonne" prefWidth="200.0" resizable="false" text="Sigle" />
-                            <TableColumn fx:id="orientationColonne" prefWidth="200.0" resizable="false" text="Orientation" />
-                              <TableColumn fx:id="anneeColonne" prefWidth="200.0" resizable="false" text="Année" />
+                            <TableColumn fx:id="sigleColonne" prefWidth="232.5" resizable="false" text="Sigle" />
+                            <TableColumn fx:id="orientationColonne" prefWidth="232.5" resizable="false" text="Orientation" />
+                              <TableColumn fx:id="anneeColonne" prefWidth="232.5" resizable="false" text="Année" />
                           </columns>
                         </TableView>
                         <Button mnemonicParsing="false" onAction="#delTot" text="Suppression Totale" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">

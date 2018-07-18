@@ -15,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import projetJava.ProjetJava;
+import projetJava.classesmetier.Attribution;
 import projetJava.classesmetier.Classes;
 import projetJava.classesmetier.Enseignant;
 import projetJava.modele.Modele;
@@ -73,9 +74,25 @@ public class AttributionController implements ControlledScreen {
     }
     
     @FXML
+    public void ajoutTitulaire() {
+        if( classeTable.getSelectionModel().getSelectedItem() != null && enseignantTable.getSelectionModel().getSelectedItem() != null) {
+            Classes classe = classeTable.getSelectionModel().getSelectedItem();
+            Enseignant enseignant = enseignantTable.getSelectionModel().getSelectedItem();
+            enseignant.setTitulaire(classe);
+            Attribution attribution = new Attribution(classe, enseignant);
+            modele.ajoutAttribution(attribution);
+            actualiser();
+        }
+    }
+    
+    @FXML
     public void actualiser() {
         enseignantObservablelist.clear();
-        enseignantObservablelist.addAll(modele.getMesEnseignants());
+        modele.getMesEnseignants().forEach((enseignant ->{
+            if( enseignant.getTitulaire()== null && enseignant.getRemplacant() == null ) {
+                enseignantObservablelist.add(enseignant);
+            }
+        }));
         id_profColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("id_prof"));
         nomColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("nom"));
         prenomColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("prenom"));

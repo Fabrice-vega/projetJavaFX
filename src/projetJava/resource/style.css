@@ -14,7 +14,7 @@ and open the template in the editor.
 
 .fond_principal {
     -fx-background-image: url("fond_ecran.jpg");
-    -fx-background-size: 600, 400;
+    -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     /* -fx-background-image: url("https..."); */
     
@@ -22,7 +22,7 @@ and open the template in the editor.
 
 .fond_decran {
     -fx-background-image: url("06.jpg");
-    -fx-background-size: 600, 400;
+    -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
