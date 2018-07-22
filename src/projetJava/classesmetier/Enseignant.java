@@ -155,6 +155,6 @@ public class Enseignant {
                ( nom != null ? nom.get() : null)
                 + ", prenom=" + 
                 ( prenom != null ? prenom.get() : null )
-                + poste.get() + '}';
+                +", "+  poste.get() + '}';
     }
 }

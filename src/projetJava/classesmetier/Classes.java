@@ -5,6 +5,7 @@
  */
 package projetJava.classesmetier;
 
+import java.util.Objects;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -113,6 +114,32 @@ public class Classes {
                 ( annee != null ? annee.get() : 0) 
                 + '}';
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 41 * hash + Objects.hashCode(this.sigle);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Classes other = (Classes) obj;
+        if (!Objects.equals(this.sigle.get(), other.sigle.get())) {
+            return false;
+        }
+        return true;
+    }
  
+    
     
 }

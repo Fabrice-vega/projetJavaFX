@@ -42,7 +42,7 @@ public class EnseignantController implements ControlledScreen {
     TableView<Enseignant> enseignantTable;
     
     @FXML
-    TableColumn<Enseignant, String> id_profColonne, nomColonne, prenomColonne;
+    TableColumn<Enseignant, String> id_profColonne, nomColonne, prenomColonne, posteColonne;
 
     @Override
     public void setScreenParent(ScreensController screenPage) {
@@ -170,6 +170,7 @@ public class EnseignantController implements ControlledScreen {
         id_profColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("id_prof"));
         nomColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("nom"));
         prenomColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("prenom"));
+        posteColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("poste"));
         enseignantTable.setItems(enseignantObservablelist);
     }
     

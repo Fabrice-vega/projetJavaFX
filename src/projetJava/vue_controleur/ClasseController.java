@@ -82,7 +82,7 @@ public class ClasseController implements ControlledScreen {
             int annee = Integer.parseInt(anneeString);
             Classes.ClasseBuilder classeBuilder = new Classes.ClasseBuilder().setSigle(sigle).setOrientation(orientation).setAnnee(annee);
             Classes classe = classeBuilder.build();
-            modele.ajoutClasses(classe);
+            Boolean ok = modele.ajoutClasses(classe);
             Alert alertBon = new Alert(Alert.AlertType.INFORMATION,modele.getClasses().toString());
             alertBon.setTitle("Liste");
             alertBon.show();
@@ -176,7 +176,7 @@ public class ClasseController implements ControlledScreen {
                 Alert suppression = new Alert(Alert.AlertType.INFORMATION);
                 suppression.setHeaderText("suppression");
                 modele.supClassesTot();
-                classesObservableList.clear();
+                actualiser();
             }
         }
     }

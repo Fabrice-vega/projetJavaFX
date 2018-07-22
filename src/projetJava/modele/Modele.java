@@ -16,16 +16,17 @@ import projetJava.classesmetier.Enseignant;
  * @author Fabrice
  */
 public class Modele {
+
     private List<Classes> mesClasses;
     private List<Enseignant> mesEnseignants;
-    private List<Attribution>mesAttributions;
-    
+    private List<Attribution> mesAttributions;
+
     private static Modele instance = null;
+
     public static Modele getInstance() {
-        if(instance != null){
+        if (instance != null) {
             return instance;
-        }
-        else {
+        } else {
             instance = new Modele();
             return instance;
         }
@@ -37,27 +38,68 @@ public class Modele {
         this.mesAttributions = new ArrayList<>();
     }
     
-    public void ajoutClasses(Classes classe) {
+    public void populate() {
+        mesClasses.add(new Classes("1I", "INFORMATIQUE", 1));
+        mesClasses.add(new Classes("2I", "INFORMATIQUE", 2));
+        mesClasses.add(new Classes("3D", "DROIT", 3));
+        mesEnseignants.add(new Enseignant("VEFA", "VEGA", "FABRICE"));
+        mesEnseignants.add(new Enseignant("GALA", "GALLET", "LAURA"));
+        mesEnseignants.add(new Enseignant("SOGA", "SOUDANT", "GAETAN"));
+    }
+
+    public Boolean ajoutClasses(Classes classe) {
+        if (mesClasses.contains(classe)) {
+         return false;   
+        }
         mesClasses.add(classe);
+        return true;
     }
-    
+
     public void supClasses(Classes classe) {
-        mesClasses.remove(classe);
+        for (Enseignant enseignant : mesEnseignants ) {
+            Classes titulaire = enseignant.getTitulaire();
+            Classes remplacant = enseignant.getRemplacant();
+           if ( titulaire != null || remplacant != null ) {
+               if ( classe.equals(titulaire) || classe.equals(remplacant) ) {
+                   System.err.println("peut pas supprimer");
+               } else {
+                   mesClasses.remove(classe);
+               }
+           }
+        }
     }
-    
+
     public void supClassesTot() {
-    mesClasses.removeAll(mesClasses);
+        List<Classes>classeAGarder = new ArrayList<>();
+        mesClasses.forEach((classe -> {
+            mesEnseignants.forEach((enseignant -> {
+                if (classe.equals(enseignant.getTitulaire()) || classe.equals(enseignant.getRemplacant())) {
+                    classeAGarder.add(classe);
+                }
+            }));
+        }));
+        mesClasses.removeAll(mesClasses);
+        mesClasses.addAll(classeAGarder);
     }
-    
+
     public List<Classes> getClasses() {
         return mesClasses;
     }
-    
+
+    public Classes getClasse(Classes classe) {
+        int index = mesClasses.indexOf(classe);
+        if (index < 0) {
+            return null;
+        } else {
+            return mesClasses.get(index);
+        }
+    }
+
     public void modifClasse(Classes ancClasse, Classes nouvClasse) {
         int index = mesClasses.indexOf(ancClasse);
         mesClasses.set(index, nouvClasse);
     }
-    
+
     public void ajoutEnseignants(Enseignant enseignant) {
         mesEnseignants.add(enseignant);
     }
@@ -65,11 +107,11 @@ public class Modele {
     public void supEnseignants(Enseignant enseignant) {
         mesEnseignants.remove(enseignant);
     }
-    
+
     public void supEnseignantsTot() {
-    mesEnseignants.removeAll(mesEnseignants);
+        mesEnseignants.removeAll(mesEnseignants);
     }
-    
+
     public List<Enseignant> getMesEnseignants() {
         return mesEnseignants;
     }
@@ -83,7 +125,12 @@ public class Modele {
         this.mesAttributions.add(attribution);
     }
 
-    
-    
-    
+    public List<Attribution> getMesAttributions() {
+        return mesAttributions;
+    }
+
+    public void supAttribution(Attribution attribution) {
+        mesAttributions.remove(attribution);
+    }
+
 }

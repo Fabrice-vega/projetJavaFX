@@ -28,6 +28,8 @@ public class Attribution {
     private final SimpleStringProperty poste;
     
     public Attribution(Classes classe, Enseignant enseignant) {
+        this.classe = classe;
+        this.enseignant = enseignant;
         this.sigle = new SimpleStringProperty(classe.getSigle());
         this.orientation = new SimpleStringProperty(classe.getOrientation());
         this.annee = new SimpleIntegerProperty(classe.getAnnee());

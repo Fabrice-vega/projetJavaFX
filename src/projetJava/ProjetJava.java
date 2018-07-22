@@ -52,8 +52,8 @@ public class ProjetJava extends Application {
         Scene scene = new Scene(root);
         primaryStage.setTitle("Projet Java");
         primaryStage.getIcons().add(new Image("https://thierrymarique.condorcet.be/img/logo_condorcet_transparent_80.png", 300, 300, false, false));
-        primaryStage.setWidth(700);
-        primaryStage.setHeight(500);
+        primaryStage.setWidth(1280);
+        primaryStage.setHeight(800);
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
