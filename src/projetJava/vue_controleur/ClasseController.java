@@ -73,6 +73,11 @@ public class ClasseController implements ControlledScreen {
     }
     
     @FXML
+    public void screenListe() {
+        this.controleurParent.setScreen(ProjetJava.screenListe);
+    }
+    
+    @FXML
     public void ajout(){
         String orientation = txtOrientation.getText().toUpperCase();
         String anneeString = txtAnnee.getText();

@@ -37,9 +37,9 @@ public class Attribution {
         this.prenom = new SimpleStringProperty(enseignant.getPrenom());
         this.nom = new SimpleStringProperty(enseignant.getNom());
         if (enseignant.getTitulaire() != null) {
-            this.poste = new SimpleStringProperty("Titulaire");
+            this.poste = new SimpleStringProperty("TITULAIRE");
         } else {
-            this.poste = new SimpleStringProperty("Remplacant");
+            this.poste = new SimpleStringProperty("REMPLACANT");
         }
     }
     

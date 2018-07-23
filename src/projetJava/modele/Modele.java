@@ -41,10 +41,16 @@ public class Modele {
     public void populate() {
         mesClasses.add(new Classes("1I", "INFORMATIQUE", 1));
         mesClasses.add(new Classes("2I", "INFORMATIQUE", 2));
+        mesClasses.add(new Classes("2D", "DROIT", 2));
         mesClasses.add(new Classes("3D", "DROIT", 3));
         mesEnseignants.add(new Enseignant("VEFA", "VEGA", "FABRICE"));
         mesEnseignants.add(new Enseignant("GALA", "GALLET", "LAURA"));
         mesEnseignants.add(new Enseignant("SOGA", "SOUDANT", "GAETAN"));
+        mesEnseignants.add(new Enseignant("GLTH", "fzefle", "THOMAS"));
+        mesEnseignants.add(new Enseignant("GLTH", "plm;^ùm", "THOMAS"));
+        mesEnseignants.add(new Enseignant("GLTH", "azdaas", "THOMAS"));
+        mesEnseignants.add(new Enseignant("GLTH", "iop", "THOMAS"));
+        mesEnseignants.add(new Enseignant("GLTH", "osamodas", "THOMAS"));
     }
 
     public Boolean ajoutClasses(Classes classe) {
@@ -131,6 +137,10 @@ public class Modele {
 
     public void supAttribution(Attribution attribution) {
         mesAttributions.remove(attribution);
+    }
+
+    public void supAttributionTot() {
+         mesAttributions.removeAll(mesAttributions);
     }
 
 }

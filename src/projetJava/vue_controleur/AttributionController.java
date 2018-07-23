@@ -6,6 +6,8 @@
 package projetJava.vue_controleur;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,39 +33,40 @@ import projetJava.modele.Modele;
  *
  * @author Fabrice
  */
-public class AttributionController implements ControlledScreen {   
+public class AttributionController implements ControlledScreen {
 
     private Modele modele;
     private ScreensController controleurParent;
-    
+    private List<Classes> classeTitulaire = new ArrayList<>();
+
     private ObservableList<Enseignant> enseignantObservablelist = FXCollections.observableArrayList();
     private ObservableList<Classes> classesObservableList = FXCollections.observableArrayList();
     private ObservableList<Attribution> attributionObservableList = FXCollections.observableArrayList();
-    
+
     @FXML
     TableColumn<Enseignant, String> id_profColonne, nomColonne, prenomColonne;
-    
+
     @FXML
     TableColumn<Classes, String> sigleColonne, orientationColonne;
-    
+
     @FXML
     TableColumn<Classes, Integer> anneeColonne;
-    
+
     @FXML
     TableColumn<Attribution, String> attribId_profColonne, attribNomColonne, attribPrenomColonne, attribPosteColonne, attribSigleColonne, attribOrientationColonne;
-    
+
     @FXML
     TableColumn<Attribution, Integer> attribAnneeColonne;
-    
+
     @FXML
     TableView<Classes> classeTable;
-    
+
     @FXML
     TableView<Enseignant> enseignantTable;
-    
+
     @FXML
     TableView<Attribution> attributionTable;
-    
+
     @FXML
     Button btnTitulaire, btnModif;
 
@@ -76,25 +79,30 @@ public class AttributionController implements ControlledScreen {
     public void setModele(Modele modele) {
         this.modele = modele;
     }
-    
+
     @FXML
     public void screenAccueil() {
         controleurParent.setScreen(ProjetJava.screenAccueil);
     }
-    
+
     @FXML
     public void screenEnseignant() {
         this.controleurParent.setScreen(ProjetJava.screenEnseignant);
     }
-    
+
     @FXML
     public void screenClasse() {
         this.controleurParent.setScreen(ProjetJava.screenClasse);
     }
-    
+
+    @FXML
+    public void screenListe() {
+        this.controleurParent.setScreen(ProjetJava.screenListe);
+    }
+
     @FXML
     public void ajoutTitulaire() {
-        if( classeTable.getSelectionModel().getSelectedItem() != null && enseignantTable.getSelectionModel().getSelectedItem() != null) {
+        if (classeTable.getSelectionModel().getSelectedItem() != null && enseignantTable.getSelectionModel().getSelectedItem() != null) {
             Classes classe = classeTable.getSelectionModel().getSelectedItem();
             Enseignant enseignant = enseignantTable.getSelectionModel().getSelectedItem();
             enseignant.setTitulaire(classe);
@@ -103,10 +111,10 @@ public class AttributionController implements ControlledScreen {
             actualiser();
         }
     }
-    
+
     @FXML
     public void ajoutRemplacant() {
-        if( classeTable.getSelectionModel().getSelectedItem() != null && enseignantTable.getSelectionModel().getSelectedItem() != null) {
+        if (classeTable.getSelectionModel().getSelectedItem() != null && enseignantTable.getSelectionModel().getSelectedItem() != null) {
             Classes classe = classeTable.getSelectionModel().getSelectedItem();
             Enseignant enseignant = enseignantTable.getSelectionModel().getSelectedItem();
             enseignant.setRemplacant(classe);
@@ -115,36 +123,41 @@ public class AttributionController implements ControlledScreen {
             actualiser();
         }
     }
-    
+
     @FXML
     public void modifTitulaire() {
-        if( attributionTable.getSelectionModel().getSelectedItem() != null) {
+        if (attributionTable.getSelectionModel().getSelectedItem() != null) {
             Classes classe = attributionTable.getSelectionModel().getSelectedItem().getClasse();
             attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setRemplacant(null);
             attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setTitulaire(classe);
+            attributionTable.getSelectionModel().getSelectedItem().setPoste("TITULAIRE");
             actualiser();
         }
     }
-    
-    @FXML public void modifRemplacant() {
-        if( attributionTable.getSelectionModel().getSelectedItem() != null) {
+
+    @FXML
+    public void modifRemplacant() {
+        if (attributionTable.getSelectionModel().getSelectedItem() != null) {
             Classes classe = attributionTable.getSelectionModel().getSelectedItem().getClasse();
             attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setTitulaire(null);
             attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setRemplacant(classe);
+            attributionTable.getSelectionModel().getSelectedItem().setPoste("REMPLACANT");
             actualiser();
         }
     }
-    
+
     @FXML
     public void suppression(KeyEvent keyevent) {
-        if(keyevent.getCode() == KeyCode.DELETE && attributionTable.getSelectionModel().getSelectedItem() != null) {
+        if (keyevent.getCode() == KeyCode.DELETE && attributionTable.getSelectionModel().getSelectedItem() != null) {
             Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer : " + attributionTable.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO);
             confirmation.setHeaderText("Demande de suppression");
             confirmation.showAndWait();
             if (confirmation.getResult() == ButtonType.YES) {
-                Alert suppression = new Alert (Alert.AlertType.INFORMATION);
+                Alert suppression = new Alert(Alert.AlertType.INFORMATION);
                 suppression.setHeaderText("suppression");
                 Attribution attribution = attributionTable.getSelectionModel().getSelectedItem();
+                attribution.getEnseignant().setTitulaire(null);
+                attribution.getEnseignant().setRemplacant(null);
                 modele.supAttribution(attribution);
                 suppression.show();
                 actualiser();
@@ -153,32 +166,71 @@ public class AttributionController implements ControlledScreen {
     }
     
     @FXML
-    public void disableTitulaire(MouseEvent mouseEvent) {
-        if(mouseEvent.getEventType() == MouseEvent.MOUSE_RELEASED && classeTable.getSelectionModel().getSelectedItem() != null ){
+    public void delTot() {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Souhaitez vous tout supprimer ?", ButtonType.YES, ButtonType.NO);
+        confirmation.setHeaderText("Demande de suppression");
+        confirmation.showAndWait();
+        if ( confirmation.getResult() == ButtonType.YES ) {
+            confirmation = new Alert(Alert.AlertType.CONFIRMATION, "êtes vous vraiment sûr ?", ButtonType.YES, ButtonType.NO);
+            confirmation.setHeaderText("Sûr et certain ?");
+            confirmation.showAndWait();
+            if ( confirmation.getResult() == ButtonType.YES ) {
+                Alert suppression = new Alert(Alert.AlertType.INFORMATION);
+                suppression.setHeaderText("suppression");
+                modele.supAttributionTot();
+                for (Enseignant enseignant : modele.getMesEnseignants()) {
+                    enseignant.setTitulaire(null);
+                    enseignant.setRemplacant(null);
+                }
+                
+            }
+        }
+    }
+
+    @FXML
+    public void disableTitulaire() {
+        if (classeTable.getSelectionModel().getSelectedItem() != null) {
             modele.getMesEnseignants().forEach((enseignant -> {
-                if(enseignant.getTitulaire() != null && classeTable.getSelectionModel().getSelectedItem().equals(enseignant.getTitulaire())) {
+                if (enseignant.getTitulaire() != null) {
+                    if (classeTable.getSelectionModel().getSelectedItem().equals(enseignant.getTitulaire())) {
+                        if (!classeTitulaire.contains(classeTable.getSelectionModel().getSelectedItem())) {
+                            classeTitulaire.add(classeTable.getSelectionModel().getSelectedItem());
+                        }
+                    }
+                }
+            }));
+            for (Classes classe : classeTitulaire) {
+                if (classe.equals(classeTable.getSelectionModel().getSelectedItem())) {
                     btnTitulaire.setDisable(true);
                 } else {
                     btnTitulaire.setDisable(false);
                 }
-            }));
+            }
         }
-        if(mouseEvent.getEventType() == MouseEvent.MOUSE_RELEASED && attributionTable.getSelectionModel().getSelectedItem() != null ){
+        if (attributionTable.getSelectionModel().getSelectedItem() != null) {
             modele.getMesEnseignants().forEach((enseignant -> {
-                if(enseignant.getTitulaire() != null && attributionTable.getSelectionModel().getSelectedItem().getClasse().equals(enseignant.getTitulaire())) {
+                if (enseignant.getTitulaire() != null) {
+                    if (attributionTable.getSelectionModel().getSelectedItem().getClasse().equals(enseignant.getTitulaire())) {
+                        classeTitulaire.add(attributionTable.getSelectionModel().getSelectedItem().getClasse());
+                    }
+                }
+            }));
+            for (Classes classe : classeTitulaire) {
+                if (classe.equals(attributionTable.getSelectionModel().getSelectedItem().getClasse())) {
                     btnModif.setDisable(true);
                 } else {
                     btnModif.setDisable(false);
                 }
-            }));
+            }
         }
     }
-    
+
     @FXML
     public void actualiser() {
+        classeTitulaire.removeAll(classeTitulaire);
         enseignantObservablelist.clear();
-        modele.getMesEnseignants().forEach((enseignant ->{
-            if( enseignant.getTitulaire()== null && enseignant.getRemplacant() == null ) {
+        modele.getMesEnseignants().forEach((enseignant -> {
+            if (enseignant.getTitulaire() == null && enseignant.getRemplacant() == null) {
                 enseignantObservablelist.add(enseignant);
             }
         }));
@@ -186,14 +238,14 @@ public class AttributionController implements ControlledScreen {
         nomColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("nom"));
         prenomColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("prenom"));
         enseignantTable.setItems(enseignantObservablelist);
-        
+
         classesObservableList.clear();
         classesObservableList.addAll(modele.getClasses());
         sigleColonne.setCellValueFactory(new PropertyValueFactory<Classes, String>("sigle"));
         orientationColonne.setCellValueFactory(new PropertyValueFactory<Classes, String>("orientation"));
         anneeColonne.setCellValueFactory(new PropertyValueFactory<Classes, Integer>("annee"));
         classeTable.setItems(classesObservableList);
-        
+
         attributionObservableList.clear();
         attributionObservableList.addAll(modele.getMesAttributions());
         attribId_profColonne.setCellValueFactory(new PropertyValueFactory<Attribution, String>("id_prof"));
@@ -204,9 +256,9 @@ public class AttributionController implements ControlledScreen {
         attribOrientationColonne.setCellValueFactory(new PropertyValueFactory<Attribution, String>("orientation"));
         attribAnneeColonne.setCellValueFactory(new PropertyValueFactory<Attribution, Integer>("annee"));
         attributionTable.setItems(attributionObservableList);
-        
+
         btnTitulaire.setDisable(false);
         btnModif.setDisable(false);
     }
-    
+
 }

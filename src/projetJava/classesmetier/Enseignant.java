@@ -23,7 +23,7 @@ public class Enseignant {
         this.id_prof = new SimpleStringProperty(id_prof);
         this.nom = new SimpleStringProperty(nom);
         this.prenom = new SimpleStringProperty(prenom);
-        this.poste = new SimpleStringProperty("Aucune Attribution");
+        this.poste = new SimpleStringProperty("AUCUNE ATTRIBUTION");
     }
 
     public Enseignant(String id_prof) {
@@ -38,7 +38,7 @@ public class Enseignant {
         this.id_prof = enseignantBuilder.id_prof;
         this.prenom = enseignantBuilder.prenom;
         this.nom = enseignantBuilder.nom;
-        this.poste = new SimpleStringProperty("Aucune Attribution");
+        this.poste = new SimpleStringProperty("AUCUNE ATTRIBUTION");
     }
     
     public static class EnseignantBuilder {
@@ -133,9 +133,9 @@ public class Enseignant {
         this.titulaire = titulaire;
         
         if(titulaire == null) {
-            this.poste.set("Aucune Attribution");
+            this.poste.set("AUCUNE ATTRIBUTION");
         } else{
-            this.poste.set("Titulaire");
+            this.poste.set("TITULAIRE");
         }
     }
 
@@ -143,9 +143,9 @@ public class Enseignant {
         this.remplacant = remplacant;
         
         if(remplacant == null) {
-            this.poste.set("Aucune Attribution");
+            this.poste.set("AUCUNE ATTRIBUTION");
         } else{
-            this.poste.set("Remplacant");
+            this.poste.set("REMPLACANT");
         }
     }
     

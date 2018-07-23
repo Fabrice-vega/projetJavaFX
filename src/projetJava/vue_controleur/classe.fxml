@@ -30,17 +30,23 @@
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button mnemonicParsing="false" onAction="#screenAccueil" text="Accueil" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button mnemonicParsing="false" onAction="#screenAccueil" text="Accueil" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
                            <padding>
                               <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
                            </padding></Button>
-                        <Button mnemonicParsing="false" onAction="#screenEnseignant" text="Enseignants" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button mnemonicParsing="false" onAction="#screenEnseignant" text="Enseignants" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
                            <padding>
                               <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
                            </padding></Button>
-                        <Button mnemonicParsing="false" onAction="#screenAttribution" text="Attributions" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Button mnemonicParsing="false" onAction="#screenAttribution" text="Attributions" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
+                           <padding>
+                              <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
+                           </padding>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#screenListe" text="Listes" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <padding>
                               <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
                            </padding>
@@ -118,9 +124,9 @@
                      <children>
                         <TableView fx:id="classeTable" onKeyReleased="#suppression" prefHeight="200.0" prefWidth="200.0" stylesheets="@../resource/style.css" GridPane.columnSpan="3" GridPane.rowSpan="2">
                           <columns>
-                            <TableColumn fx:id="sigleColonne" prefWidth="425.0" resizable="false" text="Sigle" />
-                            <TableColumn fx:id="orientationColonne" prefWidth="425.0" resizable="false" text="Orientation" />
-                              <TableColumn fx:id="anneeColonne" prefWidth="425.0" resizable="false" text="Année" />
+                            <TableColumn fx:id="sigleColonne" editable="false" prefWidth="425.0" resizable="false" sortable="false" text="Sigle" />
+                            <TableColumn fx:id="orientationColonne" editable="false" prefWidth="425.0" resizable="false" sortable="false" text="Orientation" />
+                              <TableColumn fx:id="anneeColonne" editable="false" prefWidth="425.0" resizable="false" sortable="false" text="Année" />
                           </columns>
                         </TableView>
                         <Button mnemonicParsing="false" onAction="#delTot" text="Suppression Totale" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">

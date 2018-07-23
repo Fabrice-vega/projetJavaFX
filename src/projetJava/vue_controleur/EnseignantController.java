@@ -70,6 +70,11 @@ public class EnseignantController implements ControlledScreen {
     }
     
     @FXML
+    public void screenListe() {
+        this.controleurParent.setScreen(ProjetJava.screenListe);
+    }
+    
+    @FXML
     public void ajout() {
         String nom = txtNom.getText().toUpperCase();
         String prenom = txtPrenom.getText().toUpperCase();

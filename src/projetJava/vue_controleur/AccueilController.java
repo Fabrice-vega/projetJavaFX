@@ -54,6 +54,11 @@ public class AccueilController implements ControlledScreen {
     }
     
     @FXML
+    public void screenListe() {
+        this.controleurParent.setScreen(ProjetJava.screenListe);
+    }
+    
+    @FXML
     public void fermetureProgramme() {
         Platform.exit();
     }

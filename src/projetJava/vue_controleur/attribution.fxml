@@ -24,11 +24,13 @@
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Button mnemonicParsing="false" onAction="#screenAccueil" text="Accueil" />
                         <Button mnemonicParsing="false" onAction="#screenClasse" text="Classes" GridPane.columnIndex="1" />
                         <Button mnemonicParsing="false" onAction="#screenEnseignant" text="Enseignants" GridPane.columnIndex="2" />
+                        <Button mnemonicParsing="false" onAction="#screenListe" text="Listes" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </content>
@@ -85,19 +87,19 @@
                      <children>
                         <TableView fx:id="attributionTable" onKeyReleased="#suppression" onMouseReleased="#disableTitulaire" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowSpan="2">
                           <columns>
-                            <TableColumn prefWidth="640.0" resizable="false" text="Enseignants">
+                            <TableColumn editable="false" prefWidth="640.0" resizable="false" sortable="false" text="Enseignants">
                                  <columns>
-                                    <TableColumn fx:id="attribId_profColonne" prefWidth="160.0" text="Id_professeur" />
-                                    <TableColumn fx:id="attribNomColonne" prefWidth="160.0" text="Nom" />
-                                    <TableColumn fx:id="attribPrenomColonne" prefWidth="160.0" text="Prénom" />
-                                    <TableColumn fx:id="attribPosteColonne" prefWidth="160.0" text="Poste" />
+                                    <TableColumn fx:id="attribId_profColonne" editable="false" prefWidth="160.0" sortable="false" text="Id_professeur" />
+                                    <TableColumn fx:id="attribNomColonne" editable="false" prefWidth="160.0" sortable="false" text="Nom" />
+                                    <TableColumn fx:id="attribPrenomColonne" editable="false" prefWidth="160.0" sortable="false" text="Prénom" />
+                                    <TableColumn fx:id="attribPosteColonne" editable="false" prefWidth="160.0" resizable="false" sortable="false" text="Poste" />
                                  </columns>
                               </TableColumn>
-                            <TableColumn prefWidth="640.0" text="Classes">
+                            <TableColumn editable="false" prefWidth="640.0" sortable="false" text="Classes">
                                  <columns>
-                                    <TableColumn fx:id="attribSigleColonne" prefWidth="213.3" text="Sigle" />
-                                    <TableColumn fx:id="attribOrientationColonne" prefWidth="213.3" text="Orientation" />
-                                    <TableColumn fx:id="attribAnneeColonne" prefWidth="213.3" text="Année" />
+                                    <TableColumn fx:id="attribSigleColonne" editable="false" prefWidth="213.3" resizable="false" sortable="false" text="Sigle" />
+                                    <TableColumn fx:id="attribOrientationColonne" editable="false" prefWidth="213.3" resizable="false" sortable="false" text="Orientation" />
+                                    <TableColumn fx:id="attribAnneeColonne" editable="false" prefWidth="213.3" sortable="false" text="Année" />
                                  </columns>
                               </TableColumn>
                           </columns>
