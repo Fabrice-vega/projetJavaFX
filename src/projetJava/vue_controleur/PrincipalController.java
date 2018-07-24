@@ -5,10 +5,7 @@
  */
 package projetJava.vue_controleur;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import projetJava.ProjetJava;
 import projetJava.modele.Modele;
 import projetJava.modele.ModeleJDBC;
@@ -40,14 +37,16 @@ public class PrincipalController implements ControlledScreen {
         this.controleurParent.setModForControl(modele);
         this.controleurParent.setScreen(ProjetJava.screenAccueil);
     }
-    
+
     @FXML
     public void screenAccueilJDBC() {
+
         ModeleJDBC modele = ModeleJDBC.getInstance();
         modele.setController(controleurParent);
         this.controleurParent.setModForControl(modele);
         this.controleurParent.setScreen(ProjetJava.screenAccueil);
     }
-    
+
+
     
 }

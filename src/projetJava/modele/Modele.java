@@ -5,11 +5,12 @@
  */
 package projetJava.modele;
 
-import java.util.ArrayList;
-import java.util.List;
 import projetJava.classesmetier.Attribution;
 import projetJava.classesmetier.Classes;
 import projetJava.classesmetier.Enseignant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -37,7 +38,7 @@ public class Modele {
         this.mesEnseignants = new ArrayList<>();
         this.mesAttributions = new ArrayList<>();
     }
-    
+
     public void populate() {
         mesClasses.add(new Classes("1P", "PRESCOLAIRE", 1));
         mesClasses.add(new Classes("2P", "PRESCOLAIRE", 2));
@@ -56,23 +57,25 @@ public class Modele {
 
     public Boolean ajoutClasses(Classes classe) {
         if (mesClasses.contains(classe)) {
-         return false;   
+         return false;
         }
         mesClasses.add(classe);
         return true;
     }
 
     public void supClasses(Classes classe) {
-        for (Enseignant enseignant : mesEnseignants ) {
-            Classes titulaire = enseignant.getTitulaire();
-            Classes remplacant = enseignant.getRemplacant();
-           if ( titulaire != null || remplacant != null ) {
-               if ( classe.equals(titulaire) || classe.equals(remplacant) ) {
-                   System.err.println("peut pas supprimer");
-               } else {
-                   mesClasses.remove(classe);
-               }
-           }
+        int index = mesClasses.indexOf(classe);
+        Classes classeExist = mesClasses.get(index);
+        boolean flag = false;
+        for (Enseignant mesEnseignant : mesEnseignants) {
+            Classes classEnseignantTitulaire = mesEnseignant.getTitulaire();
+            Classes classEnseignantRemplacant = mesEnseignant.getRemplacant();
+            if (classeExist.equals(classEnseignantTitulaire) || classeExist.equals(classEnseignantRemplacant)) {
+                flag = true;
+            }
+        }
+        if ( !flag ) {
+            mesClasses.remove(index);
         }
     }
 

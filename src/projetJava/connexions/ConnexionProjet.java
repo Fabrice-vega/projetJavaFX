@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projetJava.connexions;
 
 import java.sql.Connection;
@@ -10,19 +5,22 @@ import java.sql.DriverManager;
 import java.util.PropertyResourceBundle;
 
 /**
- *
- * @author Fabrice
+ * @Titre_Projet: ProjetJavaFX
+ * @Titre_Class: ConnexionProjet
+ * @Auteur: Gaetan
+ * @Créé_le: 24/07/18
  */
 public class ConnexionProjet {
 
+
     private static Connection connection = null;
 
-    private ConnexionProjet() {
+    private ConnexionProjet () {
 
     }
 
     public static Connection getInstance() {
-        if (connection != null) {
+        if ( connection != null ) {
             return connection;
         }
         PropertyResourceBundle properties = (PropertyResourceBundle) PropertyResourceBundle.getBundle("projetJava.resource.properties");
@@ -31,23 +29,24 @@ public class ConnexionProjet {
         String login = properties.getString("login");
         String password = properties.getString("password");
         String port = properties.getString("port");
-        try{
+        try {
             Class.forName("oracle.jdbc.OracleDriver");
-            String url = "jdbc:oracle:thin:@//" + server + ":" + port +"/" + database;
+            String url = "jdbc:oracle:thin:@//" + server + ":" + port + "/" + database;
             connection = DriverManager.getConnection(url, login, password);
             return connection;
-        }catch(Exception e){
+        } catch ( Exception e ) {
             System.err.println("Erreur de connexion " + e);
             e.printStackTrace();
             return null;
         }
     }
 
-    public static void close() {
+    public static void close () {
+
         try {
             connection.close();
-        } catch (Exception e) {
-            System.err.println("erreur de fermeture de connexion..." + e);
+        } catch ( Exception e ) {
+            System.err.println("Erreur de fermeture de connexion " + e);
         }
         connection = null;
     }

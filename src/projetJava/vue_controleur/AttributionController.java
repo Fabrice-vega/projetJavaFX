@@ -5,28 +5,21 @@
  */
 package projetJava.vue_controleur;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import projetJava.ProjetJava;
 import projetJava.classesmetier.Attribution;
 import projetJava.classesmetier.Classes;
 import projetJava.classesmetier.Enseignant;
 import projetJava.modele.Modele;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * FXML Controller class
@@ -108,7 +101,7 @@ public class AttributionController implements ControlledScreen {
             enseignant.setTitulaire(classe);
             Attribution attribution = new Attribution(classe, enseignant);
             modele.ajoutAttribution(attribution);
-            Alert alertBon = new Alert(Alert.AlertType.INFORMATION, "Ajout Titulaire effectué");
+            Alert alertBon = new Alert(Alert.AlertType.INFORMATION,"Ajout Titulaire effectué");
             alertBon.setTitle("Ajout !");
             alertBon.show();
             actualiser();
@@ -123,7 +116,7 @@ public class AttributionController implements ControlledScreen {
             enseignant.setRemplacant(classe);
             Attribution attribution = new Attribution(classe, enseignant);
             modele.ajoutAttribution(attribution);
-            Alert alertBon = new Alert(Alert.AlertType.INFORMATION, "Ajout Remplaçant effectué");
+            Alert alertBon = new Alert(Alert.AlertType.INFORMATION,"Ajout Remplaçant effectué");
             alertBon.setTitle("Ajout !");
             alertBon.show();
             actualiser();
@@ -137,7 +130,7 @@ public class AttributionController implements ControlledScreen {
             attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setRemplacant(null);
             attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setTitulaire(classe);
             attributionTable.getSelectionModel().getSelectedItem().setPoste("TITULAIRE");
-            Alert alertBon = new Alert(Alert.AlertType.INFORMATION, "enseignant modifié en titulaire");
+            Alert alertBon = new Alert(Alert.AlertType.INFORMATION,"enseignant modifié en titulaire");
             alertBon.setTitle("Modification !");
             alertBon.show();
             actualiser();
@@ -149,11 +142,11 @@ public class AttributionController implements ControlledScreen {
         if (attributionTable.getSelectionModel().getSelectedItem() != null) {
             Classes classe = attributionTable.getSelectionModel().getSelectedItem().getClasse();
             Enseignant enseignant = attributionTable.getSelectionModel().getSelectedItem().getEnseignant();
-            if (enseignant.getRemplacant() != null) {
-                Alert alertBon = new Alert(Alert.AlertType.INFORMATION, "enseignant déjà remplaçant...");
-                alertBon.setTitle("pas de chance :)");
+            if ( enseignant.getRemplacant() != null ) {
+                Alert alertBon = new Alert(Alert.AlertType.INFORMATION, "enseignant déjà remplaçant");
+                alertBon.setTitle("Pas de chance !");
                 alertBon.show();
-            } else {
+            }else {
                 attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setTitulaire(null);
                 attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setRemplacant(classe);
                 attributionTable.getSelectionModel().getSelectedItem().setPoste("REMPLACANT");

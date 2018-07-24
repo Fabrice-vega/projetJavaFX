@@ -1,0 +1,28 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15-juil.-2018, 15:37:46
+    Author     : Fabrice
+*/
+
+.table-view .table-column {
+    -fx-alignment: center;
+}
+
+.fond_principal {
+    -fx-background-image: url("fond_ecran.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    /* -fx-background-image: url("https..."); */
+    
+}
+
+.fond_decran {
+    -fx-background-image: url("06.jpg");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
