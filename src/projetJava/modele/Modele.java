@@ -57,13 +57,13 @@ public class Modele {
 
     public Boolean ajoutClasses(Classes classe) {
         if (mesClasses.contains(classe)) {
-         return false;
+            return false;
         }
         mesClasses.add(classe);
         return true;
     }
 
-    public void supClasses(Classes classe) {
+    public Boolean supClasses(Classes classe) {
         int index = mesClasses.indexOf(classe);
         Classes classeExist = mesClasses.get(index);
         boolean flag = false;
@@ -74,13 +74,16 @@ public class Modele {
                 flag = true;
             }
         }
-        if ( !flag ) {
+        if (!flag) {
             mesClasses.remove(index);
+            return true;
+        } else {
+            return false;
         }
     }
 
     public void supClassesTot() {
-        List<Classes>classeAGarder = new ArrayList<>();
+        List<Classes> classeAGarder = new ArrayList<>();
         mesClasses.forEach((classe -> {
             mesEnseignants.forEach((enseignant -> {
                 if (classe.equals(enseignant.getTitulaire()) || classe.equals(enseignant.getRemplacant())) {
@@ -144,7 +147,7 @@ public class Modele {
     }
 
     public void supAttributionTot() {
-         mesAttributions.removeAll(mesAttributions);
+        mesAttributions.removeAll(mesAttributions);
     }
 
 }

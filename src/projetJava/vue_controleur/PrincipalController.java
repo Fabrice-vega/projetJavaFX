@@ -33,7 +33,6 @@ public class PrincipalController implements ControlledScreen {
     @FXML
     public void screenAccueilListe() {
         Modele modele = Modele.getInstance();
-        modele.populate();
         this.controleurParent.setModForControl(modele);
         this.controleurParent.setScreen(ProjetJava.screenAccueil);
     }
