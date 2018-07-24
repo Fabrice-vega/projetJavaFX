@@ -135,5 +135,9 @@ public class ScreensController  extends StackPane {
             }
         }
     }
+    
+    public Modele getModele() {
+        return modele;
+    }
 }
 

@@ -108,6 +108,9 @@ public class AttributionController implements ControlledScreen {
             enseignant.setTitulaire(classe);
             Attribution attribution = new Attribution(classe, enseignant);
             modele.ajoutAttribution(attribution);
+            Alert alertBon = new Alert(Alert.AlertType.INFORMATION, "Ajout Titulaire effectué");
+            alertBon.setTitle("Ajout !");
+            alertBon.show();
             actualiser();
         }
     }
@@ -120,6 +123,9 @@ public class AttributionController implements ControlledScreen {
             enseignant.setRemplacant(classe);
             Attribution attribution = new Attribution(classe, enseignant);
             modele.ajoutAttribution(attribution);
+            Alert alertBon = new Alert(Alert.AlertType.INFORMATION, "Ajout Remplaçant effectué");
+            alertBon.setTitle("Ajout !");
+            alertBon.show();
             actualiser();
         }
     }
@@ -131,6 +137,9 @@ public class AttributionController implements ControlledScreen {
             attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setRemplacant(null);
             attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setTitulaire(classe);
             attributionTable.getSelectionModel().getSelectedItem().setPoste("TITULAIRE");
+            Alert alertBon = new Alert(Alert.AlertType.INFORMATION, "enseignant modifié en titulaire");
+            alertBon.setTitle("Modification !");
+            alertBon.show();
             actualiser();
         }
     }
@@ -139,9 +148,19 @@ public class AttributionController implements ControlledScreen {
     public void modifRemplacant() {
         if (attributionTable.getSelectionModel().getSelectedItem() != null) {
             Classes classe = attributionTable.getSelectionModel().getSelectedItem().getClasse();
-            attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setTitulaire(null);
-            attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setRemplacant(classe);
-            attributionTable.getSelectionModel().getSelectedItem().setPoste("REMPLACANT");
+            Enseignant enseignant = attributionTable.getSelectionModel().getSelectedItem().getEnseignant();
+            if (enseignant.getRemplacant() != null) {
+                Alert alertBon = new Alert(Alert.AlertType.INFORMATION, "enseignant déjà remplaçant...");
+                alertBon.setTitle("pas de chance :)");
+                alertBon.show();
+            } else {
+                attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setTitulaire(null);
+                attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setRemplacant(classe);
+                attributionTable.getSelectionModel().getSelectedItem().setPoste("REMPLACANT");
+                Alert alertBon = new Alert(Alert.AlertType.INFORMATION, "enseignant modifié en remplaçant");
+                alertBon.setTitle("Modification !");
+                alertBon.show();
+            }
             actualiser();
         }
     }
@@ -164,17 +183,17 @@ public class AttributionController implements ControlledScreen {
             }
         }
     }
-    
+
     @FXML
     public void delTot() {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Souhaitez vous tout supprimer ?", ButtonType.YES, ButtonType.NO);
         confirmation.setHeaderText("Demande de suppression");
         confirmation.showAndWait();
-        if ( confirmation.getResult() == ButtonType.YES ) {
+        if (confirmation.getResult() == ButtonType.YES) {
             confirmation = new Alert(Alert.AlertType.CONFIRMATION, "êtes vous vraiment sûr ?", ButtonType.YES, ButtonType.NO);
             confirmation.setHeaderText("Sûr et certain ?");
             confirmation.showAndWait();
-            if ( confirmation.getResult() == ButtonType.YES ) {
+            if (confirmation.getResult() == ButtonType.YES) {
                 Alert suppression = new Alert(Alert.AlertType.INFORMATION);
                 suppression.setHeaderText("suppression");
                 modele.supAttributionTot();
@@ -182,7 +201,7 @@ public class AttributionController implements ControlledScreen {
                     enseignant.setTitulaire(null);
                     enseignant.setRemplacant(null);
                 }
-                
+                actualiser();
             }
         }
     }
