@@ -66,7 +66,7 @@ public class ModeleJDBC extends Modele {
             callableStatement.executeUpdate();
             return true;
         } catch (SQLException sqle) {
-            System.err.println("Errur d'ajout de classe " + sqle);
+            System.err.println("Erreur d'ajout de classe " + sqle);
             return false;
         }
     }
@@ -136,6 +136,15 @@ public class ModeleJDBC extends Modele {
 
     @Override
     public void ajoutEnseignants(Enseignant enseignant) {
+        String query = "CALL PROJ_AJOUTENSEIGNANT(?, ?, ?)";
+        try(CallableStatement cs = connection.prepareCall(query)) {
+            cs.setString(1, enseignant.getId_prof());
+            cs.setString(2, enseignant.getNom());
+            cs.setString(3, enseignant.getPrenom());
+            cs.executeUpdate();
+        }catch(SQLException sqle) {
+            System.err.println("Erreur d'ajout de l'enseignant " + sqle);
+        }
     }
 
     @Override
@@ -148,9 +157,27 @@ public class ModeleJDBC extends Modele {
 
     @Override
     public List<Enseignant> getMesEnseignants() {
-        return null;
+        List<Enseignant> mesEnseignants = new ArrayList<>();
+        String query = "SELECT ID_PROF, NOM, PRENOM FROM PROJ_ENSEIGNANT ORDER BY ID_PROF ASC";
+        try(PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+            while(rs.next()) {
+                String id_prof = rs.getString("ID_PROF");
+                String nom = rs.getString("NOM");
+                String prenom = rs.getString("PRENOM");
+                Enseignant.EnseignantBuilder enseignantBuilder = new Enseignant.EnseignantBuilder().setId_prof(id_prof).setNom(nom).setPrenom(prenom);
+                try {
+                    Enseignant enseignant = enseignantBuilder.build();
+                    mesEnseignants.add(enseignant);
+                }catch(Exception e) {
+                    System.err.println("Erreur de création " + e);
+                }
+            }
+        }catch(Exception e) {
+            System.err.println("Erreur de recherche des enseignants " + e);
+        }
+        return mesEnseignants;
     }
-
+    
     @Override
     public void modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
     }
