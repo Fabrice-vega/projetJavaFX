@@ -276,6 +276,16 @@ public class ModeleJDBC extends Modele {
 
     @Override
     public void modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
+        String query = "CALL PROJ_MAJENSEIGNANT(?, ?, ?, ?)";
+        try (CallableStatement cs = connection.prepareCall(query)) {
+            cs.setString(1, nouvEnseignant.getId_prof());
+            cs.setString(2, nouvEnseignant.getNom());
+            cs.setString(3, nouvEnseignant.getPrenom());
+            cs.setString(4, ancEnseignant.getId_prof());
+            cs.executeUpdate();
+        } catch (SQLException sqle) {
+            System.err.println("Erreur " + sqle);
+        }
     }
 
     @Override
