@@ -6,6 +6,7 @@
 package projetJava.vue_controleur;
 
 import javafx.fxml.FXML;
+import javafx.stage.Stage;
 import projetJava.ProjetJava;
 import projetJava.modele.Modele;
 import projetJava.modele.ModeleJDBC;
@@ -34,6 +35,8 @@ public class PrincipalController implements ControlledScreen {
     public void screenAccueilListe() {
         Modele modele = Modele.getInstance();
         this.controleurParent.setModForControl(modele);
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Accueil - Modèle liste");
         this.controleurParent.setScreen(ProjetJava.screenAccueil);
     }
 
@@ -43,6 +46,8 @@ public class PrincipalController implements ControlledScreen {
         ModeleJDBC modele = ModeleJDBC.getInstance();
         modele.setController(controleurParent);
         this.controleurParent.setModForControl(modele);
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Accueil - Modèle JDBC");
         this.controleurParent.setScreen(ProjetJava.screenAccueil);
     }
 

@@ -20,6 +20,8 @@ import projetJava.modele.Modele;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.stage.Stage;
+import projetJava.modele.ModeleJDBC;
 
 /**
  * FXML Controller class
@@ -75,21 +77,33 @@ public class AttributionController implements ControlledScreen {
 
     @FXML
     public void screenAccueil() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Accueil - " + modele);
         controleurParent.setScreen(ProjetJava.screenAccueil);
     }
 
     @FXML
     public void screenEnseignant() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Enseignants - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenEnseignant);
     }
 
     @FXML
     public void screenClasse() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Classes - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenClasse);
     }
 
     @FXML
     public void screenListe() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Listes - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenListe);
     }
 

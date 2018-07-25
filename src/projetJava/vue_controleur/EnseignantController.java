@@ -19,9 +19,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import projetJava.ProjetJava;
 import projetJava.classesmetier.Enseignant;
 import projetJava.modele.Modele;
+import projetJava.modele.ModeleJDBC;
 
 /**
  * FXML Controller class
@@ -56,21 +58,33 @@ public class EnseignantController implements ControlledScreen {
     
     @FXML
     public void screenAccueil() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Accueil- " + modele);
         controleurParent.setScreen(projetJava.ProjetJava.screenAccueil);
     }
     
     @FXML
     public void screenClasse() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Classes - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenClasse);
     }
     
     @FXML
     public void screenAttribution() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Attributions - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenAttribution);
     }
     
     @FXML
     public void screenListe() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Listes - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenListe);
     }
     
@@ -142,8 +156,10 @@ public class EnseignantController implements ControlledScreen {
                 Alert suppression = new Alert (Alert.AlertType.INFORMATION);
                 suppression.setHeaderText("suppression");
                 Enseignant enseignant = enseignantTable.getSelectionModel().getSelectedItem();
-                modele.supEnseignants(enseignant);
+                Boolean sup = modele.supEnseignants(enseignant);
+                if(sup){
                 suppression.show();
+                }
                 actualiser();
             }
         }
@@ -163,7 +179,7 @@ public class EnseignantController implements ControlledScreen {
                 Alert suppression = new Alert(Alert.AlertType.INFORMATION);
                 suppression.setHeaderText("suppression");
                 modele.supEnseignantsTot();
-                enseignantObservablelist.clear();
+                actualiser();
             }
         }
     }

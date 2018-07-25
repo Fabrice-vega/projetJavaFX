@@ -10,8 +10,10 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.stage.Stage;
 import projetJava.ProjetJava;
 import projetJava.modele.Modele;
+import projetJava.modele.ModeleJDBC;
 
 /**
  * FXML Controller class
@@ -35,26 +37,40 @@ public class AccueilController implements ControlledScreen {
     
     @FXML
     public void screenClasse() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Classes - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenClasse);
     }
     
     @FXML
     public void screenEnseignant() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Enseignants - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenEnseignant);
     }
     
     @FXML
     public void screenPrincipal() {
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX");
         this.controleurParent.setScreen(ProjetJava.screenPrincipal);
     }
     
     @FXML
     public void screenAttribution() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Attributions - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenAttribution);
     }
     
     @FXML
     public void screenListe() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Listes - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenListe);
     }
     

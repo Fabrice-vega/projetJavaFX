@@ -19,9 +19,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import projetJava.ProjetJava;
 import projetJava.classesmetier.Classes;
 import projetJava.modele.Modele;
+import projetJava.modele.ModeleJDBC;
 
 /**
  * FXML Controller class
@@ -59,21 +61,33 @@ public class ClasseController implements ControlledScreen {
 
     @FXML
     public void screenAccueil() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Accueil - " + modele);
         controleurParent.setScreen(ProjetJava.screenAccueil);
     }
 
     @FXML
     public void screenEnseignant() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Enseignants - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenEnseignant);
     }
 
     @FXML
     public void screenAttribution() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Attributions - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenAttribution);
     }
 
     @FXML
     public void screenListe() {
+        String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
+        Stage stage = (Stage) controleurParent.getScene().getWindow();
+        stage.setTitle("ProjetJavaFX - Listes - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenListe);
     }
 

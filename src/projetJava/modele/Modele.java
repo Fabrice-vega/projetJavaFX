@@ -99,14 +99,14 @@ public class Modele {
         return mesClasses;
     }
 
-    public Classes getClasse(Classes classe) {
+    /*public Classes getClasse(Classes classe) {
         int index = mesClasses.indexOf(classe);
         if (index < 0) {
             return null;
         } else {
             return mesClasses.get(index);
         }
-    }
+    }*/
 
     public void modifClasse(Classes ancClasse, Classes nouvClasse) {
         int index = mesClasses.indexOf(ancClasse);
@@ -117,12 +117,26 @@ public class Modele {
         mesEnseignants.add(enseignant);
     }
 
-    public void supEnseignants(Enseignant enseignant) {
-        mesEnseignants.remove(enseignant);
+    public Boolean supEnseignants(Enseignant enseignant) {
+        int index = mesEnseignants.indexOf(enseignant);
+        if (enseignant.getTitulaire() != null || enseignant.getRemplacant() != null) {
+            return false;
+        }
+        mesEnseignants.remove(index);
+        return true;
     }
 
     public void supEnseignantsTot() {
+        List<Enseignant> enseignantAGarder = new ArrayList<>();
+
+        mesEnseignants.forEach((enseignant -> {
+            if (enseignant.getTitulaire() != null || enseignant.getRemplacant() != null) {
+                enseignantAGarder.add(enseignant);
+            }
+        }));
+
         mesEnseignants.removeAll(mesEnseignants);
+        mesEnseignants.addAll(enseignantAGarder);
     }
 
     public List<Enseignant> getMesEnseignants() {

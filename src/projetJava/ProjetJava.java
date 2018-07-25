@@ -57,7 +57,7 @@ public class ProjetJava extends Application {
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
         Scene scene = new Scene(root);
-        primaryStage.setTitle("Projet Java");
+        primaryStage.setTitle("ProjetJavaFX");
         primaryStage.getIcons().add(new Image("https://thierrymarique.condorcet.be/img/logo_condorcet_transparent_80.png", 300, 300, false, false));
         primaryStage.setWidth(1280);
         primaryStage.setHeight(800);
