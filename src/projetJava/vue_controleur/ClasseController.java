@@ -101,14 +101,16 @@ public class ClasseController implements ControlledScreen {
             int annee = Integer.parseInt(anneeString);
             Classes.ClasseBuilder classeBuilder = new Classes.ClasseBuilder().setSigle(sigle).setOrientation(orientation).setAnnee(annee);
             Classes classe = classeBuilder.build();
-            Boolean ok = modele.ajoutClasses(classe);
-            Alert alertBon = new Alert(Alert.AlertType.INFORMATION, modele.getClasses().toString());
-            alertBon.setTitle("Liste");
-            alertBon.show();
-            Alert alertInt = new Alert(Alert.AlertType.INFORMATION, "Ajout effectué");
-            alertInt.setTitle("Ajout !");
-            alertInt.show();
-            annuler();
+            Boolean ajout = modele.ajoutClasses(classe);
+            if (ajout) {
+                Alert alertBon = new Alert(Alert.AlertType.INFORMATION, modele.getClasses().toString());
+                alertBon.setTitle("Liste");
+                alertBon.show();
+                Alert alertInt = new Alert(Alert.AlertType.INFORMATION, "Ajout effectué");
+                alertInt.setTitle("Ajout !");
+                alertInt.show();
+                annuler();
+            }
 
         } catch (NumberFormatException nfe) {
             Alert alertInt = new Alert(Alert.AlertType.ERROR, "Année doit être un chiffre");
@@ -140,12 +142,14 @@ public class ClasseController implements ControlledScreen {
                     int annee = Integer.parseInt(anneeString);
                     Classes.ClasseBuilder classeBuilder = new Classes.ClasseBuilder().setSigle(sigle).setOrientation(orientation).setAnnee(annee);
                     Classes classeModif = classeBuilder.build();
-                    modele.modifClasse(classeTable.getSelectionModel().getSelectedItem(), classeModif);
-                    Alert alertModif = new Alert(Alert.AlertType.INFORMATION, "modification effectué");
-                    alertModif.setTitle("Modification !");
-                    alertModif.show();
-                    annuler();
-                    actualiser();
+                    Boolean modif = modele.modifClasse(classeTable.getSelectionModel().getSelectedItem(), classeModif);
+                    if (modif) {
+                        Alert alertModif = new Alert(Alert.AlertType.INFORMATION, "modification effectué");
+                        alertModif.setTitle("Modification !");
+                        alertModif.show();
+                        annuler();
+                        actualiser();
+                    }
 
                 } catch (NumberFormatException nfe) {
                     Alert alertInt = new Alert(Alert.AlertType.ERROR, "Année doit être un chiffre");

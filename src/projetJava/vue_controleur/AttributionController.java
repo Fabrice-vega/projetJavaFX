@@ -140,10 +140,8 @@ public class AttributionController implements ControlledScreen {
     @FXML
     public void modifTitulaire() {
         if (attributionTable.getSelectionModel().getSelectedItem() != null) {
-            Classes classe = attributionTable.getSelectionModel().getSelectedItem().getClasse();
-            attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setRemplacant(null);
-            attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setTitulaire(classe);
-            attributionTable.getSelectionModel().getSelectedItem().setPoste("TITULAIRE");
+            Attribution attribution = attributionTable.getSelectionModel().getSelectedItem();
+            modele.modifAttribution(attribution, true);
             Alert alertBon = new Alert(Alert.AlertType.INFORMATION,"enseignant modifié en titulaire");
             alertBon.setTitle("Modification !");
             alertBon.show();
@@ -154,16 +152,14 @@ public class AttributionController implements ControlledScreen {
     @FXML
     public void modifRemplacant() {
         if (attributionTable.getSelectionModel().getSelectedItem() != null) {
-            Classes classe = attributionTable.getSelectionModel().getSelectedItem().getClasse();
+            Attribution attribution = attributionTable.getSelectionModel().getSelectedItem();
             Enseignant enseignant = attributionTable.getSelectionModel().getSelectedItem().getEnseignant();
             if ( enseignant.getRemplacant() != null ) {
                 Alert alertBon = new Alert(Alert.AlertType.INFORMATION, "enseignant déjà remplaçant");
                 alertBon.setTitle("Pas de chance !");
                 alertBon.show();
             }else {
-                attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setTitulaire(null);
-                attributionTable.getSelectionModel().getSelectedItem().getEnseignant().setRemplacant(classe);
-                attributionTable.getSelectionModel().getSelectedItem().setPoste("REMPLACANT");
+                modele.modifAttribution(attribution, false);
                 Alert alertBon = new Alert(Alert.AlertType.INFORMATION, "enseignant modifié en remplaçant");
                 alertBon.setTitle("Modification !");
                 alertBon.show();

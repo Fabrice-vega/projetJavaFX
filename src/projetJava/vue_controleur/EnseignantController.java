@@ -34,15 +34,15 @@ public class EnseignantController implements ControlledScreen {
 
     private ScreensController controleurParent;
     private Modele modele;
-    
+
     private ObservableList<Enseignant> enseignantObservablelist = FXCollections.observableArrayList();
-    
+
     @FXML
-    TextField txtPrenom,txtNom, txtPrenomModif, txtNomModif;
-    
+    TextField txtPrenom, txtNom, txtPrenomModif, txtNomModif;
+
     @FXML
     TableView<Enseignant> enseignantTable;
-    
+
     @FXML
     TableColumn<Enseignant, String> id_profColonne, nomColonne, prenomColonne, posteColonne;
 
@@ -55,7 +55,7 @@ public class EnseignantController implements ControlledScreen {
     public void setModele(Modele modele) {
         this.modele = modele;
     }
-    
+
     @FXML
     public void screenAccueil() {
         String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
@@ -63,7 +63,7 @@ public class EnseignantController implements ControlledScreen {
         stage.setTitle("ProjetJavaFX - Accueil- " + modele);
         controleurParent.setScreen(projetJava.ProjetJava.screenAccueil);
     }
-    
+
     @FXML
     public void screenClasse() {
         String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
@@ -71,7 +71,7 @@ public class EnseignantController implements ControlledScreen {
         stage.setTitle("ProjetJavaFX - Classes - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenClasse);
     }
-    
+
     @FXML
     public void screenAttribution() {
         String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
@@ -79,7 +79,7 @@ public class EnseignantController implements ControlledScreen {
         stage.setTitle("ProjetJavaFX - Attributions - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenAttribution);
     }
-    
+
     @FXML
     public void screenListe() {
         String modele = this.modele instanceof ModeleJDBC ? "Modèle JDBC" : "Modèle liste";
@@ -87,95 +87,97 @@ public class EnseignantController implements ControlledScreen {
         stage.setTitle("ProjetJavaFX - Listes - " + modele);
         this.controleurParent.setScreen(ProjetJava.screenListe);
     }
-    
+
     @FXML
     public void ajout() {
         String nom = txtNom.getText().toUpperCase();
         String prenom = txtPrenom.getText().toUpperCase();
-        
+
         try {
-            String id_prof = nom.substring(0,2) + prenom.substring(0,2);
+            String id_prof = nom.substring(0, 2) + prenom.substring(0, 2);
             Enseignant.EnseignantBuilder enseignantBuilder = new Enseignant.EnseignantBuilder().setId_prof(id_prof).setNom(nom).setPrenom(prenom);
             Enseignant enseignant = enseignantBuilder.build();
-            modele.ajoutEnseignants(enseignant);
-            Alert alertBon = new Alert (Alert.AlertType.INFORMATION,modele.getMesEnseignants().toString());
-            alertBon.setTitle("Liste");
-            alertBon.show();
-            Alert alertInt = new Alert(Alert.AlertType.INFORMATION,"Ajout effectué");
-            alertInt.setTitle("Ajout !");
-            alertInt.show();
-            annuler();
-            
-        }catch (Exception e) {
-            Alert alertInt = new Alert(Alert.AlertType.ERROR,"Erreur lors de la création");
+            Boolean ajout = modele.ajoutEnseignants(enseignant);
+            if (ajout) {
+                Alert alertBon = new Alert(Alert.AlertType.INFORMATION, modele.getMesEnseignants().toString());
+                alertBon.setTitle("Liste");
+                alertBon.show();
+                Alert alertInt = new Alert(Alert.AlertType.INFORMATION, "Ajout effectué");
+                alertInt.setTitle("Ajout !");
+                alertInt.show();
+                annuler();
+            }
+        } catch (Exception e) {
+            Alert alertInt = new Alert(Alert.AlertType.ERROR, "Erreur lors de la création");
             alertInt.setHeaderText("Erreur de création");
             alertInt.setTitle("Erreur");
             alertInt.show();
             annuler();
         }
     }
-    
+
     @FXML
     public void modification() {
-        if(enseignantTable.getSelectionModel().getSelectedItem() != null) {
+        if (enseignantTable.getSelectionModel().getSelectedItem() != null) {
             Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Modifier : " + enseignantTable.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO);
             confirmation.setHeaderText("Demande de modification");
             confirmation.showAndWait();
-            if( confirmation.getResult() == ButtonType.YES ) {
+            if (confirmation.getResult() == ButtonType.YES) {
                 String nom = txtNomModif.getText().toUpperCase();
                 String prenom = txtPrenomModif.getText().toUpperCase();
                 try {
-                    String id_prof = nom.substring(0,2) + prenom.substring(0,2);
+                    String id_prof = nom.substring(0, 2) + prenom.substring(0, 2);
                     Enseignant.EnseignantBuilder enseignantBuilder = new Enseignant.EnseignantBuilder().setId_prof(id_prof).setNom(nom).setPrenom(prenom);
                     Enseignant enseignantModif = enseignantBuilder.build();
-                    modele.modifEnseignant(enseignantTable.getSelectionModel().getSelectedItem(),enseignantModif);
-                    Alert alertModif = new Alert(Alert.AlertType.INFORMATION,"Modification effectué");
-                    alertModif.setTitle("Modification !");
-                    alertModif.show();
-                    annuler();
-                    actualiser();
-                    
-                }catch (Exception e) {
-                    Alert alertInt = new Alert(Alert.AlertType.ERROR,"Erreur lors de la modification");
+                    Boolean modif = modele.modifEnseignant(enseignantTable.getSelectionModel().getSelectedItem(), enseignantModif);
+                    if (modif) {
+                        Alert alertModif = new Alert(Alert.AlertType.INFORMATION, "Modification effectué");
+                        alertModif.setTitle("Modification !");
+                        alertModif.show();
+                        annuler();
+                        actualiser();
+                    }
+                } catch (Exception e) {
+                    Alert alertInt = new Alert(Alert.AlertType.ERROR, "Erreur lors de la modification");
                     alertInt.setHeaderText("Erreur de modification");
                     alertInt.setTitle("Erreur");
                     alertInt.show();
                     annuler();
-                }   
+                }
             }
         }
     }
-    
+
     @FXML
     public void suppression(KeyEvent keyevent) {
-        if(keyevent.getCode() == KeyCode.DELETE && enseignantTable.getSelectionModel().getSelectedItem() != null) {
+        if (keyevent.getCode() == KeyCode.DELETE && enseignantTable.getSelectionModel().getSelectedItem() != null) {
             Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer : " + enseignantTable.getSelectionModel().getSelectedItem() + " ?", ButtonType.YES, ButtonType.NO);
             confirmation.setHeaderText("Demande de suppression");
             confirmation.showAndWait();
             if (confirmation.getResult() == ButtonType.YES) {
-                Alert suppression = new Alert (Alert.AlertType.INFORMATION);
+                Alert suppression = new Alert(Alert.AlertType.INFORMATION);
                 suppression.setHeaderText("suppression");
                 Enseignant enseignant = enseignantTable.getSelectionModel().getSelectedItem();
                 Boolean sup = modele.supEnseignants(enseignant);
-                if(sup){
-                suppression.show();
+                if (sup) {
+                    suppression.show();
                 }
                 actualiser();
             }
         }
     }
-    
+
     @FXML
     public void delTot() {
-        
+
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Souhaitez vous tout supprimer ?", ButtonType.YES, ButtonType.NO);
         confirmation.setHeaderText("Demande de suppression");
         confirmation.showAndWait();
-        if ( confirmation.getResult() == ButtonType.YES ) {
+        if (confirmation.getResult() == ButtonType.YES) {
             confirmation = new Alert(Alert.AlertType.CONFIRMATION, "êtes vous vraiment sûr ?", ButtonType.YES, ButtonType.NO);
             confirmation.setHeaderText("Sûr et certain ?");
             confirmation.showAndWait();
-            if ( confirmation.getResult() == ButtonType.YES ) {
+            if (confirmation.getResult() == ButtonType.YES) {
                 Alert suppression = new Alert(Alert.AlertType.INFORMATION);
                 suppression.setHeaderText("suppression");
                 modele.supEnseignantsTot();
@@ -183,7 +185,7 @@ public class EnseignantController implements ControlledScreen {
             }
         }
     }
-    
+
     @FXML
     public void actualiser() {
         enseignantObservablelist.clear();
@@ -194,7 +196,7 @@ public class EnseignantController implements ControlledScreen {
         posteColonne.setCellValueFactory(new PropertyValueFactory<Enseignant, String>("poste"));
         enseignantTable.setItems(enseignantObservablelist);
     }
-    
+
     @FXML
     public void annuler() {
         txtNom.setText("");

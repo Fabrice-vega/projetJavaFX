@@ -9,6 +9,7 @@ import projetJava.vue_controleur.ScreensController;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.Alert;
 import javafx.scene.shape.Arc;
 
 public class ModeleJDBC extends Modele {
@@ -66,6 +67,11 @@ public class ModeleJDBC extends Modele {
             callableStatement.setString(3, classe.getOrientation());
             callableStatement.executeUpdate();
             return true;
+        } catch (SQLIntegrityConstraintViolationException doublon) {
+            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Classe déjà créée");
+            alertDoublon.setTitle("Erreur...");
+            alertDoublon.show();
+            return false;
         } catch (SQLException sqle) {
             System.err.println("Erreur d'ajout de classe " + sqle);
             return false;
@@ -153,7 +159,7 @@ public class ModeleJDBC extends Modele {
     }
 
     @Override
-    public void modifClasse(Classes ancClasse, Classes nouvClasse) {
+    public Boolean modifClasse(Classes ancClasse, Classes nouvClasse) {
         String query = "CALL PROJ_MAJCLASSE(?, ?, ?, ?)";
         try (CallableStatement cs = connection.prepareCall(query)) {
             cs.setString(1, nouvClasse.getSigle());
@@ -161,22 +167,36 @@ public class ModeleJDBC extends Modele {
             cs.setString(3, nouvClasse.getOrientation());
             cs.setString(4, ancClasse.getSigle());
             cs.executeUpdate();
+            return true;
+        } catch (SQLIntegrityConstraintViolationException doublon) {
+            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Classe existant");
+            alertDoublon.setTitle("Erreur...");
+            alertDoublon.show();
+            return false;
         } catch (SQLException sqle) {
             System.err.println("Erreur " + sqle);
+            return false;
         }
 
     }
 
     @Override
-    public void ajoutEnseignants(Enseignant enseignant) {
+    public Boolean ajoutEnseignants(Enseignant enseignant) {
         String query = "CALL PROJ_AJOUTENSEIGNANT(?, ?, ?)";
         try (CallableStatement cs = connection.prepareCall(query)) {
             cs.setString(1, enseignant.getId_prof());
             cs.setString(2, enseignant.getNom());
             cs.setString(3, enseignant.getPrenom());
             cs.executeUpdate();
+            return true;
+        } catch (SQLIntegrityConstraintViolationException doublon) {
+            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Enseignant déjà créée");
+            alertDoublon.setTitle("Erreur...");
+            alertDoublon.show();
+            return false;
         } catch (SQLException sqle) {
             System.err.println("Erreur d'ajout de l'enseignant " + sqle);
+            return false;
         }
     }
 
@@ -258,9 +278,9 @@ public class ModeleJDBC extends Modele {
                 Enseignant.EnseignantBuilder enseignantBuilder = new Enseignant.EnseignantBuilder().setId_prof(id_prof).setNom(nom).setPrenom(prenom);
                 try {
                     Enseignant enseignant = enseignantBuilder.build();
-                    if(idTitulaire != 0) {
+                    if (idTitulaire != 0) {
                         enseignant.setTitulaire(getClasse(idTitulaire));
-                    } else if( idRemplacant != 0) {
+                    } else if (idRemplacant != 0) {
                         enseignant.setRemplacant(getClasse(idRemplacant));
                     }
                     return enseignant;
@@ -275,7 +295,7 @@ public class ModeleJDBC extends Modele {
     }
 
     @Override
-    public void modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
+    public Boolean modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
         String query = "CALL PROJ_MAJENSEIGNANT(?, ?, ?, ?)";
         try (CallableStatement cs = connection.prepareCall(query)) {
             cs.setString(1, nouvEnseignant.getId_prof());
@@ -283,15 +303,49 @@ public class ModeleJDBC extends Modele {
             cs.setString(3, nouvEnseignant.getPrenom());
             cs.setString(4, ancEnseignant.getId_prof());
             cs.executeUpdate();
+            return true;
+        } catch (SQLIntegrityConstraintViolationException doublon) {
+            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Enseignant existant");
+            alertDoublon.setTitle("Erreur...");
+            alertDoublon.show();
+            return false;
         } catch (SQLException sqle) {
             System.err.println("Erreur " + sqle);
+            return false;
         }
     }
 
     @Override
     public void ajoutAttribution(Attribution attribution) {
         String query = "CALL PROJ_AJOUTATTRIBUTION(?, ?)";
-        
+        String queryIdProf = "SELECT ID FROM PROJ_ENSEIGNANT WHERE ID_PROF = ?";
+        String queryIdClasse = "SELECT ID FROM PROJ_CLASSES WHERE SIGLE = ?";
+        try (CallableStatement cs = connection.prepareCall(query); PreparedStatement psProf = connection.prepareStatement(queryIdProf); PreparedStatement psClasse = connection.prepareStatement(queryIdClasse)) {
+            psProf.setString(1, attribution.getId_prof());
+            psClasse.setString(1, attribution.getSigle());
+            ResultSet rsProf = psProf.executeQuery();
+            ResultSet rsClasse = psClasse.executeQuery();
+            if (rsProf.next() && rsClasse.next()) {
+                int idProf = rsProf.getInt("ID");
+                int idClasse = rsClasse.getInt("ID");
+                cs.setInt(1, idProf);
+                cs.setInt(2, idClasse);
+                cs.executeUpdate();
+                if (attribution.getEnseignant().getTitulaire() != null) {
+                    PreparedStatement ps = connection.prepareStatement("UPDATE PROJ_ENSEIGNANT SET ID_TITULAIRE = ? WHERE ID = ?");
+                    ps.setInt(1, idClasse);
+                    ps.setInt(2, idProf);
+                    ps.executeUpdate();
+                } else {
+                    PreparedStatement ps = connection.prepareStatement("UPDATE PROJ_ENSEIGNANT SET ID_REMPLACANT = ? WHERE ID = ?");
+                    ps.setInt(1, idClasse);
+                    ps.setInt(2, idProf);
+                    ps.executeUpdate();
+                }
+            }
+        } catch (SQLException sqle) {
+            System.err.println("Erreur d'ajout " + sqle);
+        }
     }
 
     @Override
@@ -317,10 +371,71 @@ public class ModeleJDBC extends Modele {
 
     @Override
     public void supAttribution(Attribution attribution) {
+        String query = "CALL PROJ_SUPATTRIBUTION(?, ?)";
+        String queryIdProf = "SELECT ID FROM PROJ_ENSEIGNANT WHERE ID_PROF = ?";
+        String queryIdClasse = "SELECT ID FROM PROJ_CLASSES WHERE SIGLE = ?";
+        try (CallableStatement cs = connection.prepareCall(query); PreparedStatement psProf = connection.prepareStatement(queryIdProf); PreparedStatement psClasse = connection.prepareStatement(queryIdClasse)) {
+            psProf.setString(1, attribution.getId_prof());
+            psClasse.setString(1, attribution.getSigle());
+            ResultSet rsProf = psProf.executeQuery();
+            ResultSet rsClasse = psClasse.executeQuery();
+            if (rsProf.next() && rsClasse.next()) {
+                int idProf = rsProf.getInt("ID");
+                int idClasse = rsClasse.getInt("ID");
+                cs.setInt(1, idProf);
+                cs.setInt(2, idClasse);
+                cs.executeUpdate();
+
+                PreparedStatement ps = connection.prepareStatement("UPDATE PROJ_ENSEIGNANT SET ID_TITULAIRE = NULL WHERE ID = ?");
+                ps.setInt(1, idProf);
+                ps.executeUpdate();
+                ps = connection.prepareStatement("UPDATE PROJ_ENSEIGNANT SET ID_REMPLACANT = NULL WHERE ID = ?");
+                ps.setInt(1, idProf);
+                ps.executeUpdate();
+            }
+        } catch (SQLException sqle) {
+            System.err.println("Erreur d'ajout " + sqle);
+        }
     }
 
     @Override
     public void supAttributionTot() {
+        List<Attribution> mesAttributions = getMesAttributions();
+        mesAttributions.forEach((this::supAttribution));
     }
 
+    @Override
+    public void modifAttribution(Attribution attribution, boolean titulaire) {
+        if (titulaire) {
+            String queryIdClasse = "SELECT ID FROM PROJ_CLASSES WHERE SIGLE = ?";
+            String query = "UPDATE PROJ_ENSEIGNANT SET ID_REMPLACANT = NULL, ID_TITULAIRE = ? WHERE ID_PROF = ?";
+            try (PreparedStatement psClasse = connection.prepareStatement(queryIdClasse); PreparedStatement ps = connection.prepareStatement(query)) {
+                psClasse.setString(1, attribution.getSigle());
+                ResultSet rsClasse = psClasse.executeQuery();
+                if (rsClasse.next()) {
+                    int idClasse = rsClasse.getInt("ID");
+                    ps.setInt(1, idClasse);
+                    ps.setString(2, attribution.getId_prof());
+                    ps.executeUpdate();
+                }
+            } catch (SQLException sqle) {
+                System.err.println("Erreur de modification" + sqle);
+            }
+        } else {
+            String queryIdClasse = "SELECT ID FROM PROJ_CLASSES WHERE SIGLE = ?";
+            String query = "UPDATE PROJ_ENSEIGNANT SET ID_REMPLACANT = ?, ID_TITULAIRE = NULL WHERE ID_PROF = ?";
+            try (PreparedStatement psClasse = connection.prepareStatement(queryIdClasse); PreparedStatement ps = connection.prepareStatement(query)) {
+                psClasse.setString(1, attribution.getSigle());
+                ResultSet rsClasse = psClasse.executeQuery();
+                if (rsClasse.next()) {
+                    int idClasse = rsClasse.getInt("ID");
+                    ps.setInt(1, idClasse);
+                    ps.setString(2, attribution.getId_prof());
+                    ps.executeUpdate();
+                }
+            } catch (SQLException sqle) {
+                System.err.println("Erreur de modification" + sqle);
+            }
+        }
+    }
 }

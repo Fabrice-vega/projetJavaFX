@@ -107,14 +107,15 @@ public class Modele {
             return mesClasses.get(index);
         }
     }*/
-
-    public void modifClasse(Classes ancClasse, Classes nouvClasse) {
+    public Boolean modifClasse(Classes ancClasse, Classes nouvClasse) {
         int index = mesClasses.indexOf(ancClasse);
         mesClasses.set(index, nouvClasse);
+        return true;
     }
 
-    public void ajoutEnseignants(Enseignant enseignant) {
+    public Boolean ajoutEnseignants(Enseignant enseignant) {
         mesEnseignants.add(enseignant);
+        return true;
     }
 
     public Boolean supEnseignants(Enseignant enseignant) {
@@ -143,9 +144,10 @@ public class Modele {
         return mesEnseignants;
     }
 
-    public void modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
+    public Boolean modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
         int index = mesEnseignants.indexOf(ancEnseignant);
         mesEnseignants.set(index, nouvEnseignant);
+        return true;
     }
 
     public void ajoutAttribution(Attribution attribution) {
@@ -162,6 +164,18 @@ public class Modele {
 
     public void supAttributionTot() {
         mesAttributions.removeAll(mesAttributions);
+    }
+
+    public void modifAttribution(Attribution attribution, boolean titulaire) {
+        if (titulaire) {
+            attribution.getEnseignant().setRemplacant(null);
+            attribution.getEnseignant().setTitulaire(attribution.getClasse());
+            attribution.setPoste("TITULAIRE");
+        } else {
+            attribution.getEnseignant().setTitulaire(null);
+            attribution.getEnseignant().setRemplacant(attribution.getClasse());
+            attribution.setPoste("REMPLACANT");
+        }
     }
 
 }
