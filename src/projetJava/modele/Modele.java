@@ -5,12 +5,18 @@
  */
 package projetJava.modele;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import projetJava.classesmetier.Attribution;
 import projetJava.classesmetier.Classes;
 import projetJava.classesmetier.Enseignant;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.Alert;
+import projetJava.vue_controleur.ScreensController;
 
 /**
  *
@@ -23,6 +29,7 @@ public class Modele {
     private List<Attribution> mesAttributions;
 
     private static Modele instance = null;
+    private String notification;
 
     public static Modele getInstance() {
         if (instance != null) {
@@ -54,12 +61,49 @@ public class Modele {
         mesEnseignants.add(new Enseignant("DUGA", "DUFRANE", "GABRIEL"));
         mesEnseignants.add(new Enseignant("LIAL", "LIBERT", "ALEXANDRE"));
     }
+    
+    public void populate(ScreensController observer) {
+        mesClasses.add(new Classes("1P", "PRESCOLAIRE", 1));
+        mesClasses.add(new Classes("2P", "PRESCOLAIRE", 2));
+        mesClasses.add(new Classes("1I", "INFORMATIQUE", 1));
+        mesClasses.add(new Classes("2I", "INFORMATIQUE", 2));
+        mesClasses.add(new Classes("2D", "DROIT", 2));
+        mesClasses.add(new Classes("3D", "DROIT", 3));
+        mesClasses.add(new Classes("2C", "COMPTABILITE", 2));
+        mesEnseignants.add(new Enseignant("VEFA", "VEGA", "FABRICE"));
+        mesEnseignants.add(new Enseignant("GALA", "GALLET", "LAURA"));
+        mesEnseignants.add(new Enseignant("SOGA", "SOUDANT", "GAETAN"));
+        mesEnseignants.add(new Enseignant("GLTH", "GLIBERT", "THOMAS"));
+        mesEnseignants.add(new Enseignant("DUGA", "DUFRANE", "GABRIEL"));
+        mesEnseignants.add(new Enseignant("LIAL", "LIBERT", "ALEXANDRE"));
+        mesEnseignants.get(0).add(observer);
+        mesEnseignants.get(1).add(observer);
+        mesEnseignants.get(2).add(observer);
+        mesEnseignants.get(3).add(observer);
+        mesEnseignants.get(4).add(observer);
+        mesEnseignants.get(5).add(observer);
+    }
 
     public Boolean ajoutClasses(Classes classe) {
         if (mesClasses.contains(classe)) {
+            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Classe déjà créée");
+            alertDoublon.setTitle("Erreur...");
+            alertDoublon.show();
             return false;
         }
         mesClasses.add(classe);
+        return true;
+    }
+    
+    public Boolean modifClasse(Classes ancClasse, Classes nouvClasse) {
+        int index = mesClasses.indexOf(ancClasse);
+        if(mesClasses.contains(nouvClasse) && !nouvClasse.getSigle().equals(ancClasse.getSigle())) {
+            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Classe déjà existante");
+            alertDoublon.setTitle("Erreur...");
+            alertDoublon.show();
+            return false;
+        }
+        mesClasses.set(index, nouvClasse);
         return true;
     }
 
@@ -99,22 +143,27 @@ public class Modele {
         return mesClasses;
     }
 
-    /*public Classes getClasse(Classes classe) {
-        int index = mesClasses.indexOf(classe);
-        if (index < 0) {
-            return null;
-        } else {
-            return mesClasses.get(index);
-        }
-    }*/
-    public Boolean modifClasse(Classes ancClasse, Classes nouvClasse) {
-        int index = mesClasses.indexOf(ancClasse);
-        mesClasses.set(index, nouvClasse);
-        return true;
-    }
 
     public Boolean ajoutEnseignants(Enseignant enseignant) {
+        if(mesEnseignants.contains(enseignant)) {
+            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Enseignant déjà créée");
+            alertDoublon.setTitle("Erreur...");
+            alertDoublon.show();
+            return false;
+        }
         mesEnseignants.add(enseignant);
+        return true;
+    }
+    
+    public Boolean modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
+        int index = mesEnseignants.indexOf(ancEnseignant);
+        if(mesEnseignants.contains(nouvEnseignant) && !nouvEnseignant.getId_prof().equals(ancEnseignant.getId_prof())) {
+            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Enseignant déjà existant");
+            alertDoublon.setTitle("Erreur...");
+            alertDoublon.show();
+            return false;
+        }
+        mesEnseignants.set(index, nouvEnseignant);
         return true;
     }
 
@@ -144,11 +193,6 @@ public class Modele {
         return mesEnseignants;
     }
 
-    public Boolean modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
-        int index = mesEnseignants.indexOf(ancEnseignant);
-        mesEnseignants.set(index, nouvEnseignant);
-        return true;
-    }
 
     public void ajoutAttribution(Attribution attribution) {
         this.mesAttributions.add(attribution);
@@ -175,6 +219,31 @@ public class Modele {
             attribution.getEnseignant().setTitulaire(null);
             attribution.getEnseignant().setRemplacant(attribution.getClasse());
             attribution.setPoste("REMPLACANT");
+        }
+    }
+
+    public void actualise(String notification) {
+        this.notification = notification;
+    }
+
+    public void sendMail() {
+        File fichier;
+        FileWriter fileWriter = null;
+        try {
+            fichier = new File("src/projetJava/resource/mail.txt");
+            fileWriter = new FileWriter(fichier, true);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            printWriter.println(this.notification);
+        } catch (IOException e) {
+            System.err.println("Problème d'accès " + e.getMessage());
+        } finally {
+            try {
+                if(fileWriter != null) {
+                    fileWriter.close();
+                }
+            } catch (IOException e) {
+                System.err.println("Erreur " + e.getMessage());
+            }
         }
     }
 

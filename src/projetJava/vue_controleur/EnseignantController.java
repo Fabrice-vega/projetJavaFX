@@ -99,6 +99,7 @@ public class EnseignantController implements ControlledScreen {
             Enseignant enseignant = enseignantBuilder.build();
             Boolean ajout = modele.ajoutEnseignants(enseignant);
             if (ajout) {
+                enseignant.add(controleurParent);
                 Alert alertBon = new Alert(Alert.AlertType.INFORMATION, modele.getMesEnseignants().toString());
                 alertBon.setTitle("Liste");
                 alertBon.show();

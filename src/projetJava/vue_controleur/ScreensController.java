@@ -18,12 +18,17 @@ import projetJava.modele.Modele;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import javafx.scene.control.Alert;
+import projetJava.classesmetier.Classes;
+import projetJava.classesmetier.Enseignant;
+import projetJava.observer.Observateur;
 
 /**
  *
  * @author Angie
  */
-public class ScreensController  extends StackPane {
+public class ScreensController  extends StackPane implements Observateur {
     //Holds the screens to be displayed
 
     private HashMap<String, Node> screens = new HashMap<>();
@@ -138,6 +143,24 @@ public class ScreensController  extends StackPane {
 
     public Modele getModele() {
         return modele;
+    }
+
+    @Override
+    public void actualise(String notification, Classes classe, Enseignant enseignant) {
+        AtomicBoolean ok = new AtomicBoolean(false);
+        modele.getMesEnseignants().forEach((verifEnseignant -> {
+            if(((verifEnseignant.getTitulaire() != null && verifEnseignant.getTitulaire().equals(classe)) || (verifEnseignant.getRemplacant() != null &&
+            verifEnseignant.getRemplacant().equals(classe))) && !verifEnseignant.equals(enseignant)) {
+                modele.actualise("Bonjour " + verifEnseignant.getNom() + " " + verifEnseignant.getPrenom() + "\n\t" + notification);
+                modele.sendMail();
+                ok.set(true);
+            }
+        }));
+        if(ok.get()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Notification(s) envoyées");
+            alert.setHeaderText("Notification(s)");
+            alert.showAndWait();
+        }
     }
 }
 

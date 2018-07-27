@@ -1,6 +1,8 @@
 package projetJava.classesmetier;
 
+import java.util.Objects;
 import javafx.beans.property.SimpleStringProperty;
+import projetJava.observer.Sujet;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,7 +14,7 @@ import javafx.beans.property.SimpleStringProperty;
  *
  * @author Fabrice
  */
-public class Enseignant {
+public class Enseignant extends Sujet {
     private final SimpleStringProperty id_prof;
     private final SimpleStringProperty nom;
     private final SimpleStringProperty prenom;
@@ -130,13 +132,21 @@ public class Enseignant {
     }
 
     public void setTitulaire(Classes titulaire) {
-        this.titulaire = titulaire;
-        
+        Classes oldClasse = null;
+        if(titulaire != null) {
+            this.titulaire = titulaire;
+        }else {
+            oldClasse = this.titulaire;
+            this.titulaire = null;
+        }
         if(titulaire == null) {
+            notify(this.getNom() + " " + this.getPrenom() + " n'est plus titulaire de la " + oldClasse, oldClasse, this);
             this.poste.set("AUCUNE ATTRIBUTION");
         } else{
+            notify(this.getNom() + " " + this.getPrenom() + " est le nouveau titulaire de la " + titulaire, titulaire, this);
             this.poste.set("TITULAIRE");
         }
+        
     }
 
     public void setRemplacant(Classes remplacant) {
@@ -157,4 +167,30 @@ public class Enseignant {
                 ( prenom != null ? prenom.get() : null )
                 +", "+  poste.get() + '}';
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.id_prof);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Enseignant other = (Enseignant) obj;
+        if (!Objects.equals(this.id_prof.get(), other.id_prof.get())) {
+            return false;
+        }
+        return true;
+    }
+    
 }

@@ -253,6 +253,7 @@ public class ModeleJDBC extends Modele {
                         Classes classe = getClasse(remplacant);
                         enseignant.setRemplacant(classe);
                     }
+                    enseignant.add(controllerParent);
                     mesEnseignants.add(enseignant);
                 } catch (Exception e) {
                     System.err.println("Erreur de création " + e);
@@ -283,6 +284,7 @@ public class ModeleJDBC extends Modele {
                     } else if (idRemplacant != 0) {
                         enseignant.setRemplacant(getClasse(idRemplacant));
                     }
+                    enseignant.add(controllerParent);
                     return enseignant;
                 } catch (Exception e) {
                     System.err.println("Erreur de création " + e);
@@ -368,6 +370,45 @@ public class ModeleJDBC extends Modele {
         }
         return mesAttributions;
     }
+    
+    @Override
+    public void modifAttribution(Attribution attribution, boolean titulaire) {
+        if (titulaire) {
+            String queryIdClasse = "SELECT ID FROM PROJ_CLASSES WHERE SIGLE = ?";
+            String query = "UPDATE PROJ_ENSEIGNANT SET ID_REMPLACANT = NULL, ID_TITULAIRE = ? WHERE ID_PROF = ?";
+            try (PreparedStatement psClasse = connection.prepareStatement(queryIdClasse); PreparedStatement ps = connection.prepareStatement(query)) {
+                psClasse.setString(1, attribution.getSigle());
+                ResultSet rsClasse = psClasse.executeQuery();
+                if (rsClasse.next()) {
+                    int idClasse = rsClasse.getInt("ID");
+                    ps.setInt(1, idClasse);
+                    ps.setString(2, attribution.getId_prof());
+                    ps.executeUpdate();
+                    attribution.getEnseignant().setRemplacant(null);
+                    attribution.getEnseignant().setTitulaire(attribution.getClasse());
+                }
+            } catch (SQLException sqle) {
+                System.err.println("Erreur de modification" + sqle);
+            }
+        } else {
+            String queryIdClasse = "SELECT ID FROM PROJ_CLASSES WHERE SIGLE = ?";
+            String query = "UPDATE PROJ_ENSEIGNANT SET ID_REMPLACANT = ?, ID_TITULAIRE = NULL WHERE ID_PROF = ?";
+            try (PreparedStatement psClasse = connection.prepareStatement(queryIdClasse); PreparedStatement ps = connection.prepareStatement(query)) {
+                psClasse.setString(1, attribution.getSigle());
+                ResultSet rsClasse = psClasse.executeQuery();
+                if (rsClasse.next()) {
+                    int idClasse = rsClasse.getInt("ID");
+                    ps.setInt(1, idClasse);
+                    ps.setString(2, attribution.getId_prof());
+                    ps.executeUpdate();
+                    attribution.getEnseignant().setRemplacant(attribution.getClasse());
+                    attribution.getEnseignant().setTitulaire(null);
+                }
+            } catch (SQLException sqle) {
+                System.err.println("Erreur de modification" + sqle);
+            }
+        }
+    }
 
     @Override
     public void supAttribution(Attribution attribution) {
@@ -404,38 +445,4 @@ public class ModeleJDBC extends Modele {
         mesAttributions.forEach((this::supAttribution));
     }
 
-    @Override
-    public void modifAttribution(Attribution attribution, boolean titulaire) {
-        if (titulaire) {
-            String queryIdClasse = "SELECT ID FROM PROJ_CLASSES WHERE SIGLE = ?";
-            String query = "UPDATE PROJ_ENSEIGNANT SET ID_REMPLACANT = NULL, ID_TITULAIRE = ? WHERE ID_PROF = ?";
-            try (PreparedStatement psClasse = connection.prepareStatement(queryIdClasse); PreparedStatement ps = connection.prepareStatement(query)) {
-                psClasse.setString(1, attribution.getSigle());
-                ResultSet rsClasse = psClasse.executeQuery();
-                if (rsClasse.next()) {
-                    int idClasse = rsClasse.getInt("ID");
-                    ps.setInt(1, idClasse);
-                    ps.setString(2, attribution.getId_prof());
-                    ps.executeUpdate();
-                }
-            } catch (SQLException sqle) {
-                System.err.println("Erreur de modification" + sqle);
-            }
-        } else {
-            String queryIdClasse = "SELECT ID FROM PROJ_CLASSES WHERE SIGLE = ?";
-            String query = "UPDATE PROJ_ENSEIGNANT SET ID_REMPLACANT = ?, ID_TITULAIRE = NULL WHERE ID_PROF = ?";
-            try (PreparedStatement psClasse = connection.prepareStatement(queryIdClasse); PreparedStatement ps = connection.prepareStatement(query)) {
-                psClasse.setString(1, attribution.getSigle());
-                ResultSet rsClasse = psClasse.executeQuery();
-                if (rsClasse.next()) {
-                    int idClasse = rsClasse.getInt("ID");
-                    ps.setInt(1, idClasse);
-                    ps.setString(2, attribution.getId_prof());
-                    ps.executeUpdate();
-                }
-            } catch (SQLException sqle) {
-                System.err.println("Erreur de modification" + sqle);
-            }
-        }
-    }
 }

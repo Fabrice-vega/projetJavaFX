@@ -49,7 +49,7 @@ public class ProjetJava extends Application {
         mainContainer.loadScreen(ProjetJava.screenAttribution, ProjetJava.screenAttributionFile);
         mainContainer.loadScreen(ProjetJava.screenListe, ProjetJava.screenListeFile);
         Modele modeleListe = Modele.getInstance();
-        modeleListe.populate();
+        modeleListe.populate(mainContainer);
         
         //premier ecran
         mainContainer.setScreen(ProjetJava.screenPrincipal);
