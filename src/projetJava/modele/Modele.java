@@ -61,7 +61,7 @@ public class Modele {
         mesEnseignants.add(new Enseignant("DUGA", "DUFRANE", "GABRIEL"));
         mesEnseignants.add(new Enseignant("LIAL", "LIBERT", "ALEXANDRE"));
     }
-    
+
     public void populate(ScreensController observer) {
         mesClasses.add(new Classes("1P", "PRESCOLAIRE", 1));
         mesClasses.add(new Classes("2P", "PRESCOLAIRE", 2));
@@ -86,18 +86,15 @@ public class Modele {
 
     public Boolean ajoutClasses(Classes classe) {
         if (mesClasses.contains(classe)) {
-            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Classe déjà créée");
-            alertDoublon.setTitle("Erreur...");
-            alertDoublon.show();
             return false;
         }
         mesClasses.add(classe);
         return true;
     }
-    
+
     public Boolean modifClasse(Classes ancClasse, Classes nouvClasse) {
         int index = mesClasses.indexOf(ancClasse);
-        if(mesClasses.contains(nouvClasse) && !nouvClasse.getSigle().equals(ancClasse.getSigle())) {
+        if (mesClasses.contains(nouvClasse) && !nouvClasse.getSigle().equals(ancClasse.getSigle())) {
             Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Classe déjà existante");
             alertDoublon.setTitle("Erreur...");
             alertDoublon.show();
@@ -143,9 +140,8 @@ public class Modele {
         return mesClasses;
     }
 
-
     public Boolean ajoutEnseignants(Enseignant enseignant) {
-        if(mesEnseignants.contains(enseignant)) {
+        if (mesEnseignants.contains(enseignant)) {
             Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Enseignant déjà créée");
             alertDoublon.setTitle("Erreur...");
             alertDoublon.show();
@@ -154,10 +150,10 @@ public class Modele {
         mesEnseignants.add(enseignant);
         return true;
     }
-    
+
     public Boolean modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
         int index = mesEnseignants.indexOf(ancEnseignant);
-        if(mesEnseignants.contains(nouvEnseignant) && !nouvEnseignant.getId_prof().equals(ancEnseignant.getId_prof())) {
+        if (mesEnseignants.contains(nouvEnseignant) && !nouvEnseignant.getId_prof().equals(ancEnseignant.getId_prof())) {
             Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Enseignant déjà existant");
             alertDoublon.setTitle("Erreur...");
             alertDoublon.show();
@@ -192,7 +188,6 @@ public class Modele {
     public List<Enseignant> getMesEnseignants() {
         return mesEnseignants;
     }
-
 
     public void ajoutAttribution(Attribution attribution) {
         this.mesAttributions.add(attribution);
@@ -238,7 +233,7 @@ public class Modele {
             System.err.println("Problème d'accès " + e.getMessage());
         } finally {
             try {
-                if(fileWriter != null) {
+                if (fileWriter != null) {
                     fileWriter.close();
                 }
             } catch (IOException e) {

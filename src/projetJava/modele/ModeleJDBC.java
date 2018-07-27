@@ -68,9 +68,6 @@ public class ModeleJDBC extends Modele {
             callableStatement.executeUpdate();
             return true;
         } catch (SQLIntegrityConstraintViolationException doublon) {
-            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Classe déjà créée");
-            alertDoublon.setTitle("Erreur...");
-            alertDoublon.show();
             return false;
         } catch (SQLException sqle) {
             System.err.println("Erreur d'ajout de classe " + sqle);
@@ -370,7 +367,7 @@ public class ModeleJDBC extends Modele {
         }
         return mesAttributions;
     }
-    
+
     @Override
     public void modifAttribution(Attribution attribution, boolean titulaire) {
         if (titulaire) {

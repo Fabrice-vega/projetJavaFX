@@ -110,6 +110,10 @@ public class ClasseController implements ControlledScreen {
                 alertInt.setTitle("Ajout !");
                 alertInt.show();
                 annuler();
+            } else {
+                Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Classe déjà créée");
+                alertDoublon.setTitle("Erreur...");
+                alertDoublon.show();
             }
 
         } catch (NumberFormatException nfe) {

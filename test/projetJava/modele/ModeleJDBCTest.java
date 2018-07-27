@@ -21,16 +21,16 @@ import projetJava.vue_controleur.ScreensController;
  *
  * @author Fabrice
  */
-public class ModeleTest {
+public class ModeleJDBCTest {
 
     /**
-     * Test of ajoutClasses method, of class Modele.
+     * Test of ajoutClasses method, of class ModeleJDBC.
      */
     @Test
     public void testAjoutClasses() {
         System.out.println("ajoutClasses");
-        Classes classe = new Classes("2D", "DROIT", 2);
-        Modele instance = Modele.getInstance();
+        Classes classe = new Classes("9Z", "DROIT", 8);
+        Modele instance = ModeleJDBC.getInstance();
         Boolean expResult = true;
         Boolean result = instance.ajoutClasses(classe);
         assertEquals( "Ajout", expResult, result);
@@ -41,29 +41,13 @@ public class ModeleTest {
     }
 
     /**
-     * Test of modifClasse method, of class Modele.
-     */
-    @Test
-    public void testModifClasse() {
-        System.out.println("modifClasse");
-        Classes ancClasse = null;
-        Classes nouvClasse = null;
-        Modele instance = new Modele();
-        Boolean expResult = null;
-        Boolean result = instance.modifClasse(ancClasse, nouvClasse);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of supClasses method, of class Modele.
+     * Test of supClasses method, of class ModeleJDBC.
      */
     @Test
     public void testSupClasses() {
         System.out.println("supClasses");
         Classes classe = null;
-        Modele instance = new Modele();
+        ModeleJDBC instance = null;
         Boolean expResult = null;
         Boolean result = instance.supClasses(classe);
         assertEquals(expResult, result);
@@ -72,12 +56,12 @@ public class ModeleTest {
     }
 
     /**
-     * Test of getClasses method, of class Modele.
+     * Test of getClasses method, of class ModeleJDBC.
      */
     @Test
     public void testGetClasses() {
         System.out.println("getClasses");
-        Modele instance = new Modele();
+        ModeleJDBC instance = null;
         List<Classes> expResult = null;
         List<Classes> result = instance.getClasses();
         assertEquals(expResult, result);
@@ -86,13 +70,44 @@ public class ModeleTest {
     }
 
     /**
-     * Test of ajoutEnseignants method, of class Modele.
+     * Test of getClasse method, of class ModeleJDBC.
+     */
+    @Test
+    public void testGetClasse() {
+        System.out.println("getClasse");
+        int idClasse = 0;
+        ModeleJDBC instance = null;
+        Classes expResult = null;
+        Classes result = instance.getClasse(idClasse);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of modifClasse method, of class ModeleJDBC.
+     */
+    @Test
+    public void testModifClasse() {
+        System.out.println("modifClasse");
+        Classes ancClasse = null;
+        Classes nouvClasse = null;
+        ModeleJDBC instance = null;
+        Boolean expResult = null;
+        Boolean result = instance.modifClasse(ancClasse, nouvClasse);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of ajoutEnseignants method, of class ModeleJDBC.
      */
     @Test
     public void testAjoutEnseignants() {
         System.out.println("ajoutEnseignants");
         Enseignant enseignant = null;
-        Modele instance = new Modele();
+        ModeleJDBC instance = null;
         Boolean expResult = null;
         Boolean result = instance.ajoutEnseignants(enseignant);
         assertEquals(expResult, result);
@@ -101,29 +116,13 @@ public class ModeleTest {
     }
 
     /**
-     * Test of modifEnseignant method, of class Modele.
-     */
-    @Test
-    public void testModifEnseignant() {
-        System.out.println("modifEnseignant");
-        Enseignant ancEnseignant = null;
-        Enseignant nouvEnseignant = null;
-        Modele instance = new Modele();
-        Boolean expResult = null;
-        Boolean result = instance.modifEnseignant(ancEnseignant, nouvEnseignant);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of supEnseignants method, of class Modele.
+     * Test of supEnseignants method, of class ModeleJDBC.
      */
     @Test
     public void testSupEnseignants() {
         System.out.println("supEnseignants");
         Enseignant enseignant = null;
-        Modele instance = new Modele();
+        ModeleJDBC instance = null;
         Boolean expResult = null;
         Boolean result = instance.supEnseignants(enseignant);
         assertEquals(expResult, result);
@@ -132,12 +131,12 @@ public class ModeleTest {
     }
 
     /**
-     * Test of getMesEnseignants method, of class Modele.
+     * Test of getMesEnseignants method, of class ModeleJDBC.
      */
     @Test
     public void testGetMesEnseignants() {
         System.out.println("getMesEnseignants");
-        Modele instance = new Modele();
+        ModeleJDBC instance = null;
         List<Enseignant> expResult = null;
         List<Enseignant> result = instance.getMesEnseignants();
         assertEquals(expResult, result);
@@ -146,25 +145,41 @@ public class ModeleTest {
     }
 
     /**
-     * Test of ajoutAttribution method, of class Modele.
+     * Test of modifEnseignant method, of class ModeleJDBC.
+     */
+    @Test
+    public void testModifEnseignant() {
+        System.out.println("modifEnseignant");
+        Enseignant ancEnseignant = null;
+        Enseignant nouvEnseignant = null;
+        ModeleJDBC instance = null;
+        Boolean expResult = null;
+        Boolean result = instance.modifEnseignant(ancEnseignant, nouvEnseignant);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of ajoutAttribution method, of class ModeleJDBC.
      */
     @Test
     public void testAjoutAttribution() {
         System.out.println("ajoutAttribution");
         Attribution attribution = null;
-        Modele instance = new Modele();
+        ModeleJDBC instance = null;
         instance.ajoutAttribution(attribution);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getMesAttributions method, of class Modele.
+     * Test of getMesAttributions method, of class ModeleJDBC.
      */
     @Test
     public void testGetMesAttributions() {
         System.out.println("getMesAttributions");
-        Modele instance = new Modele();
+        ModeleJDBC instance = null;
         List<Attribution> expResult = null;
         List<Attribution> result = instance.getMesAttributions();
         assertEquals(expResult, result);
@@ -173,65 +188,40 @@ public class ModeleTest {
     }
 
     /**
-     * Test of supAttribution method, of class Modele.
-     */
-    @Test
-    public void testSupAttribution() {
-        System.out.println("supAttribution");
-        Attribution attribution = null;
-        Modele instance = new Modele();
-        instance.supAttribution(attribution);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of supAttributionTot method, of class Modele.
-     */
-    @Test
-    public void testSupAttributionTot() {
-        System.out.println("supAttributionTot");
-        Modele instance = new Modele();
-        instance.supAttributionTot();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of modifAttribution method, of class Modele.
+     * Test of modifAttribution method, of class ModeleJDBC.
      */
     @Test
     public void testModifAttribution() {
         System.out.println("modifAttribution");
         Attribution attribution = null;
         boolean titulaire = false;
-        Modele instance = new Modele();
+        ModeleJDBC instance = null;
         instance.modifAttribution(attribution, titulaire);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of actualise method, of class Modele.
+     * Test of supAttribution method, of class ModeleJDBC.
      */
     @Test
-    public void testActualise() {
-        System.out.println("actualise");
-        String notification = "";
-        Modele instance = new Modele();
-        instance.actualise(notification);
+    public void testSupAttribution() {
+        System.out.println("supAttribution");
+        Attribution attribution = null;
+        ModeleJDBC instance = null;
+        instance.supAttribution(attribution);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of sendMail method, of class Modele.
+     * Test of supAttributionTot method, of class ModeleJDBC.
      */
     @Test
-    public void testSendMail() {
-        System.out.println("sendMail");
-        Modele instance = new Modele();
-        instance.sendMail();
+    public void testSupAttributionTot() {
+        System.out.println("supAttributionTot");
+        ModeleJDBC instance = null;
+        instance.supAttributionTot();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
