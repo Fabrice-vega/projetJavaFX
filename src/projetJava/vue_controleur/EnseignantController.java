@@ -107,6 +107,10 @@ public class EnseignantController implements ControlledScreen {
                 alertInt.setTitle("Ajout !");
                 alertInt.show();
                 annuler();
+            } else {
+                Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Enseignant déjà créée");
+                alertDoublon.setTitle("Erreur...");
+                alertDoublon.show();
             }
         } catch (Exception e) {
             Alert alertInt = new Alert(Alert.AlertType.ERROR, "Erreur lors de la création");

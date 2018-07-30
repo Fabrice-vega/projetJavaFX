@@ -4,12 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.PropertyResourceBundle;
 
-/**
- * @Titre_Projet: ProjetJavaFX
- * @Titre_Class: ConnexionProjet
- * @Auteur: Gaetan
- * @Créé_le: 24/07/18
- */
+
 public class ConnexionProjet {
 
 

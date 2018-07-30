@@ -187,9 +187,6 @@ public class ModeleJDBC extends Modele {
             cs.executeUpdate();
             return true;
         } catch (SQLIntegrityConstraintViolationException doublon) {
-            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Enseignant déjà créée");
-            alertDoublon.setTitle("Erreur...");
-            alertDoublon.show();
             return false;
         } catch (SQLException sqle) {
             System.err.println("Erreur d'ajout de l'enseignant " + sqle);
@@ -262,7 +259,7 @@ public class ModeleJDBC extends Modele {
         return mesEnseignants;
     }
 
-    private Enseignant getEnseignant(int idProf) {
+    public Enseignant getEnseignant(int idProf) {
         String query = "SELECT ID_PROF, ID_TITULAIRE, ID_REMPLACANT, NOM, PRENOM FROM PROJ_ENSEIGNANT WHERE ID = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idProf);

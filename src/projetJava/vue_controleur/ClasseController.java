@@ -153,6 +153,10 @@ public class ClasseController implements ControlledScreen {
                         alertModif.show();
                         annuler();
                         actualiser();
+                    } else {
+                        Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Classe déjà existante");
+                        alertDoublon.setTitle("Erreur...");
+                        alertDoublon.show();
                     }
 
                 } catch (NumberFormatException nfe) {

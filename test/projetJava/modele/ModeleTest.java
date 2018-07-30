@@ -29,11 +29,11 @@ public class ModeleTest {
     @Test
     public void testAjoutClasses() {
         System.out.println("ajoutClasses");
-        Classes classe = new Classes("2D", "DROIT", 2);
+        Classes classe = new Classes("9D", "DROIT", 9);
         Modele instance = Modele.getInstance();
         Boolean expResult = true;
         Boolean result = instance.ajoutClasses(classe);
-        assertEquals( "Ajout", expResult, result);
+        assertEquals("Ajout", expResult, result);
         expResult = false;
         result = instance.ajoutClasses(classe);
         assertEquals("Existe déjà", expResult, result);
@@ -46,14 +46,19 @@ public class ModeleTest {
     @Test
     public void testModifClasse() {
         System.out.println("modifClasse");
-        Classes ancClasse = null;
-        Classes nouvClasse = null;
-        Modele instance = new Modele();
-        Boolean expResult = null;
+        Classes ancClasse = new Classes("4D", "DROIT", 4);
+        Classes nouvClasse = new Classes("6D", "DROIT", 6);
+        Modele instance = Modele.getInstance();
+        Boolean expResult = true;
+        instance.ajoutClasses(ancClasse);
         Boolean result = instance.modifClasse(ancClasse, nouvClasse);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("modification", expResult, result);
+        Classes autreClasse = new Classes("9Z", "ZETA", 9);
+        instance.ajoutClasses(autreClasse);
+        expResult = false;
+        result = instance.modifClasse(autreClasse, nouvClasse);
+        assertEquals("sigle existe déjà", expResult, result);
+        instance.supClassesTot();
     }
 
     /**
@@ -62,27 +67,21 @@ public class ModeleTest {
     @Test
     public void testSupClasses() {
         System.out.println("supClasses");
-        Classes classe = null;
-        Modele instance = new Modele();
-        Boolean expResult = null;
+        Classes classe = new Classes("9Z", "ZETA", 9);
+        Modele instance = Modele.getInstance();
+        Boolean expResult = true;
+        instance.ajoutClasses(classe);
         Boolean result = instance.supClasses(classe);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getClasses method, of class Modele.
-     */
-    @Test
-    public void testGetClasses() {
-        System.out.println("getClasses");
-        Modele instance = new Modele();
-        List<Classes> expResult = null;
-        List<Classes> result = instance.getClasses();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("Suppression", expResult, result);
+        instance.ajoutClasses(classe);
+        Enseignant enseignant = new Enseignant("BOTO", "BOBO", "TOTO");
+        enseignant.setTitulaire(classe);
+        instance.ajoutEnseignants(enseignant);
+        expResult = false;
+        result = instance.supClasses(classe);
+        assertEquals("Classe attribuée", expResult, result);
+        instance.supEnseignants(enseignant);
+        instance.supClasses(classe);
     }
 
     /**
@@ -132,20 +131,6 @@ public class ModeleTest {
     }
 
     /**
-     * Test of getMesEnseignants method, of class Modele.
-     */
-    @Test
-    public void testGetMesEnseignants() {
-        System.out.println("getMesEnseignants");
-        Modele instance = new Modele();
-        List<Enseignant> expResult = null;
-        List<Enseignant> result = instance.getMesEnseignants();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of ajoutAttribution method, of class Modele.
      */
     @Test
@@ -154,20 +139,6 @@ public class ModeleTest {
         Attribution attribution = null;
         Modele instance = new Modele();
         instance.ajoutAttribution(attribution);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getMesAttributions method, of class Modele.
-     */
-    @Test
-    public void testGetMesAttributions() {
-        System.out.println("getMesAttributions");
-        Modele instance = new Modele();
-        List<Attribution> expResult = null;
-        List<Attribution> result = instance.getMesAttributions();
-        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -186,18 +157,6 @@ public class ModeleTest {
     }
 
     /**
-     * Test of supAttributionTot method, of class Modele.
-     */
-    @Test
-    public void testSupAttributionTot() {
-        System.out.println("supAttributionTot");
-        Modele instance = new Modele();
-        instance.supAttributionTot();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of modifAttribution method, of class Modele.
      */
     @Test
@@ -210,30 +169,4 @@ public class ModeleTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-
-    /**
-     * Test of actualise method, of class Modele.
-     */
-    @Test
-    public void testActualise() {
-        System.out.println("actualise");
-        String notification = "";
-        Modele instance = new Modele();
-        instance.actualise(notification);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of sendMail method, of class Modele.
-     */
-    @Test
-    public void testSendMail() {
-        System.out.println("sendMail");
-        Modele instance = new Modele();
-        instance.sendMail();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
 }

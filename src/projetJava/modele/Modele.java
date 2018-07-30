@@ -95,9 +95,6 @@ public class Modele {
     public Boolean modifClasse(Classes ancClasse, Classes nouvClasse) {
         int index = mesClasses.indexOf(ancClasse);
         if (mesClasses.contains(nouvClasse) && !nouvClasse.getSigle().equals(ancClasse.getSigle())) {
-            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Classe déjà existante");
-            alertDoublon.setTitle("Erreur...");
-            alertDoublon.show();
             return false;
         }
         mesClasses.set(index, nouvClasse);
