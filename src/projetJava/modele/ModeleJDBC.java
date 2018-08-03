@@ -12,6 +12,10 @@ import java.util.List;
 import javafx.scene.control.Alert;
 import javafx.scene.shape.Arc;
 
+/**
+ *
+ * @author Fabrice
+ */
 public class ModeleJDBC extends Modele {
 
     private Connection connection;
@@ -29,6 +33,11 @@ public class ModeleJDBC extends Modele {
         }
     }
 
+    /**
+     * Méthode qui gère l'instance
+     *
+     * @return l'état de l'instance
+     */
     public static ModeleJDBC getInstance() {
 
         if (instance != null) {
@@ -39,6 +48,9 @@ public class ModeleJDBC extends Modele {
         }
     }
 
+    /**
+     * Méthode de fermeture de la connection à la BD
+     */
     public void close() {
 
         try {
@@ -53,11 +65,20 @@ public class ModeleJDBC extends Modele {
         this.controllerParent = controleurParent;
     }
 
+    /**
+     * Méthode héritée de populate()
+     */
     @Override
     public void populate() {
 
     }
 
+    /**
+     * Méthode héritée de ajoutClasses()
+     *
+     * @param classe la classe à ajouter
+     * @return l'état de la classe
+     */
     @Override
     public Boolean ajoutClasses(Classes classe) {
         String query = "CALL PROJ_AJOUTCLASSE(?, ?, ?)";
@@ -75,6 +96,12 @@ public class ModeleJDBC extends Modele {
         }
     }
 
+    /**
+     * Méthode héritée de supClasses()
+     *
+     * @param classe la classe à supprimer
+     * @return l'état de la classe
+     */
     @Override
     public Boolean supClasses(Classes classe) {
         String query = "SELECT ID_CLASSE FROM PROJ_ATTRIBUTION JOIN PROJ_CLASSES ON (ID_CLASSE = PROJ_CLASSES.ID) WHERE PROJ_CLASSES.SIGLE = ?";
@@ -100,6 +127,9 @@ public class ModeleJDBC extends Modele {
         return false;
     }
 
+    /**
+     * Méthode héritée de supClassesTot()
+     */
     @Override
     public void supClassesTot() {
         List<Classes> mesClasses = new ArrayList<>();
@@ -107,6 +137,11 @@ public class ModeleJDBC extends Modele {
         mesClasses.forEach((this::supClasses));
     }
 
+    /**
+     * Méthode héritée de getClasses()
+     *
+     * @return la liste des classes
+     */
     @Override
     public List<Classes> getClasses() {
 
@@ -132,6 +167,11 @@ public class ModeleJDBC extends Modele {
         return mesClasses;
     }
 
+    /**
+     *Méthode de récupération d'une seule classe
+     * @param idClasse la classe à récupérer
+     * @return la classe
+     */
     public Classes getClasse(int idClasse) {
         String query = "SELECT SIGLE, ORIENTATION, ANNEE FROM PROJ_CLASSES WHERE ID = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
@@ -155,6 +195,13 @@ public class ModeleJDBC extends Modele {
         return null;
     }
 
+    /**
+     * Méthode héritée de modifClasse()
+     *
+     * @param ancClasse la classe à modifier
+     * @param nouvClasse la classe modifiée
+     * @return l'état de la modification
+     */
     @Override
     public Boolean modifClasse(Classes ancClasse, Classes nouvClasse) {
         String query = "CALL PROJ_MAJCLASSE(?, ?, ?, ?)";
@@ -174,6 +221,12 @@ public class ModeleJDBC extends Modele {
 
     }
 
+    /**
+     * Méthode héritée de ajoutEnseignants()
+     *
+     * @param enseignant l'enseignant à ajouter
+     * @return l'état de l'ajout de l'enseignant
+     */
     @Override
     public Boolean ajoutEnseignants(Enseignant enseignant) {
         String query = "CALL PROJ_AJOUTENSEIGNANT(?, ?, ?)";
@@ -191,6 +244,12 @@ public class ModeleJDBC extends Modele {
         }
     }
 
+    /**
+     * Méthode héritée de supEnseignants()
+     *
+     * @param enseignant l'enseignant à supprimer
+     * @return l'état de suppression
+     */
     @Override
     public Boolean supEnseignants(Enseignant enseignant) {
         String query = "SELECT PROJ_ATTRIBUTION.ID_PROF FROM PROJ_ATTRIBUTION JOIN PROJ_ENSEIGNANT ON (PROJ_ATTRIBUTION.ID_PROF= PROJ_ENSEIGNANT.ID) WHERE PROJ_ENSEIGNANT.ID_PROF = ?";
@@ -216,6 +275,9 @@ public class ModeleJDBC extends Modele {
         return false;
     }
 
+    /**
+     * Méthode héritée de supEnseignantsTot()
+     */
     @Override
     public void supEnseignantsTot() {
         List<Enseignant> mesEnseignants = new ArrayList<>();
@@ -223,6 +285,11 @@ public class ModeleJDBC extends Modele {
         mesEnseignants.forEach((this::supEnseignants));
     }
 
+    /**
+     * Méthode héritée de getMesEnseignants()
+     *
+     * @return la liste des enseignants
+     */
     @Override
     public List<Enseignant> getMesEnseignants() {
         List<Enseignant> mesEnseignants = new ArrayList<>();
@@ -256,6 +323,11 @@ public class ModeleJDBC extends Modele {
         return mesEnseignants;
     }
 
+    /**
+     *Méthode de récupération d'un seul enseignant
+     * @param idProf l'id du prof à récupérer
+     * @return l'enseignant
+     */
     public Enseignant getEnseignant(int idProf) {
         String query = "SELECT ID_PROF, ID_TITULAIRE, ID_REMPLACANT, NOM, PRENOM FROM PROJ_ENSEIGNANT WHERE ID = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
@@ -287,6 +359,13 @@ public class ModeleJDBC extends Modele {
         return null;
     }
 
+    /**
+     * Méthode héritée de modifEnseignant()
+     *
+     * @param ancEnseignant l'enseignant à modifier
+     * @param nouvEnseignant l'enseignant modifié
+     * @return l'état de la modification
+     */
     @Override
     public Boolean modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
         String query = "CALL PROJ_MAJENSEIGNANT(?, ?, ?, ?)";
@@ -305,6 +384,11 @@ public class ModeleJDBC extends Modele {
         }
     }
 
+    /**
+     * Méthode héritée de ajoutAttribution()
+     *
+     * @param attribution l'attribution à ajouter
+     */
     @Override
     public void ajoutAttribution(Attribution attribution) {
         String query = "CALL PROJ_AJOUTATTRIBUTION(?, ?)";
@@ -338,6 +422,11 @@ public class ModeleJDBC extends Modele {
         }
     }
 
+    /**
+     * Méthode héritée de getMesAttributions()
+     *
+     * @return la liste des attributions
+     */
     @Override
     public List<Attribution> getMesAttributions() {
         List<Attribution> mesAttributions = new ArrayList<>();
@@ -359,6 +448,12 @@ public class ModeleJDBC extends Modele {
         return mesAttributions;
     }
 
+    /**
+     * Méthode héritée de modifAttribution()
+     *
+     * @param attribution l'attribution à modifier
+     * @param titulaire le poste à assigner
+     */
     @Override
     public void modifAttribution(Attribution attribution, boolean titulaire) {
         if (titulaire) {
@@ -398,6 +493,11 @@ public class ModeleJDBC extends Modele {
         }
     }
 
+    /**
+     * Méthode héritée de supAttribution()
+     *
+     * @param attribution l'attribution à supprimer
+     */
     @Override
     public void supAttribution(Attribution attribution) {
         String query = "CALL PROJ_SUPATTRIBUTION(?, ?)";
@@ -427,6 +527,9 @@ public class ModeleJDBC extends Modele {
         }
     }
 
+    /**
+     * Méthode héritée de supAttribTot()
+     */
     @Override
     public void supAttributionTot() {
         List<Attribution> mesAttributions = getMesAttributions();
