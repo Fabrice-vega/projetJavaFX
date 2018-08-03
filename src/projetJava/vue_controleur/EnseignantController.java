@@ -141,6 +141,10 @@ public class EnseignantController implements ControlledScreen {
                         alertModif.show();
                         annuler();
                         actualiser();
+                    } else {
+                        Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Enseignant déjà existant");
+                        alertDoublon.setTitle("Erreur...");
+                        alertDoublon.show();
                     }
                 } catch (Exception e) {
                     Alert alertInt = new Alert(Alert.AlertType.ERROR, "Erreur lors de la modification");

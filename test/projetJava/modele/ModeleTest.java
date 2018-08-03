@@ -5,17 +5,15 @@
  */
 package projetJava.modele;
 
-import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import projetJava.classesmetier.Attribution;
 import projetJava.classesmetier.Classes;
 import projetJava.classesmetier.Enseignant;
-import projetJava.vue_controleur.ScreensController;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  *
@@ -30,7 +28,7 @@ public class ModeleTest {
     public void testAjoutClasses() {
         System.out.println("ajoutClasses");
         Classes classe = new Classes("9D", "DROIT", 9);
-        Modele instance = Modele.getInstance();
+        Modele instance = new Modele();
         Boolean expResult = true;
         Boolean result = instance.ajoutClasses(classe);
         assertEquals("Ajout", expResult, result);
@@ -48,7 +46,7 @@ public class ModeleTest {
         System.out.println("modifClasse");
         Classes ancClasse = new Classes("4D", "DROIT", 4);
         Classes nouvClasse = new Classes("6D", "DROIT", 6);
-        Modele instance = Modele.getInstance();
+        Modele instance = new Modele();
         Boolean expResult = true;
         instance.ajoutClasses(ancClasse);
         Boolean result = instance.modifClasse(ancClasse, nouvClasse);
@@ -68,7 +66,7 @@ public class ModeleTest {
     public void testSupClasses() {
         System.out.println("supClasses");
         Classes classe = new Classes("9Z", "ZETA", 9);
-        Modele instance = Modele.getInstance();
+        Modele instance = new Modele();
         Boolean expResult = true;
         instance.ajoutClasses(classe);
         Boolean result = instance.supClasses(classe);
@@ -90,13 +88,15 @@ public class ModeleTest {
     @Test
     public void testAjoutEnseignants() {
         System.out.println("ajoutEnseignants");
-        Enseignant enseignant = null;
+        Enseignant enseignant = new Enseignant("ZIZI", "ZIOU", "ZIU");
         Modele instance = new Modele();
-        Boolean expResult = null;
+        Boolean expResult = true;
         Boolean result = instance.ajoutEnseignants(enseignant);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("Ajout", expResult, result);
+        expResult = false;
+        result = instance.ajoutEnseignants(enseignant);
+        assertEquals("Existe déjà", expResult, result);
+        instance.supEnseignants(enseignant);
     }
 
     /**
@@ -105,14 +105,19 @@ public class ModeleTest {
     @Test
     public void testModifEnseignant() {
         System.out.println("modifEnseignant");
-        Enseignant ancEnseignant = null;
-        Enseignant nouvEnseignant = null;
+        Enseignant ancEnseignant = new Enseignant("ZIZI", "ZIOU", "ZIU");
+        Enseignant nouvEnseignant = new Enseignant("ZUZU", "ZUOU", "ZUU");
         Modele instance = new Modele();
-        Boolean expResult = null;
+        Boolean expResult = true;
+        instance.ajoutEnseignants(ancEnseignant);
         Boolean result = instance.modifEnseignant(ancEnseignant, nouvEnseignant);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("modification", expResult, result);
+        Enseignant autreEnseignant = new Enseignant("ZOZO", "ZOTA", "ZOYA");
+        instance.ajoutEnseignants(autreEnseignant);
+        expResult = false;
+        result = instance.modifEnseignant(autreEnseignant, nouvEnseignant);
+        assertEquals("id_prof existe déjà", expResult, result);
+        instance.supEnseignantsTot();
     }
 
     /**
@@ -121,13 +126,21 @@ public class ModeleTest {
     @Test
     public void testSupEnseignants() {
         System.out.println("supEnseignants");
-        Enseignant enseignant = null;
+        Enseignant enseignant = new Enseignant("ZIZI", "ZIOU", "ZIU");
         Modele instance = new Modele();
-        Boolean expResult = null;
+        Boolean expResult = true;
+        instance.ajoutEnseignants(enseignant);
         Boolean result = instance.supEnseignants(enseignant);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("Suppression", expResult, result);
+        instance.ajoutEnseignants(enseignant);
+        Classes classe = new Classes("9Z", "ZETA", 9);
+        enseignant.setTitulaire(classe);
+        instance.ajoutClasses(classe);
+        expResult = false;
+        result = instance.supEnseignants(enseignant);
+        assertEquals("Enseignant attribuée", expResult, result);
+        instance.supEnseignants(enseignant);
+        instance.supClasses(classe);
     }
 
     /**
@@ -136,11 +149,20 @@ public class ModeleTest {
     @Test
     public void testAjoutAttribution() {
         System.out.println("ajoutAttribution");
-        Attribution attribution = null;
+        Classes classe = new Classes("9O", "OBLIVION", 9);
+        Enseignant enseignant = new Enseignant("TOPA", "TOUCHE", "PAS");
+        Attribution attribution = new Attribution(classe, enseignant);
         Modele instance = new Modele();
+        instance.ajoutClasses(classe);
+        enseignant.setRemplacant(classe);
         instance.ajoutAttribution(attribution);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Attribution expResult = attribution;
+        List<Attribution> mesAttributions = instance.getMesAttributions();
+        int index = mesAttributions.indexOf(attribution);
+        Attribution result = mesAttributions.get(index);
+        assertEquals("Attribution", expResult, result);
+        instance.supAttribution(attribution);
+        instance.supClasses(classe);
     }
 
     /**
@@ -149,11 +171,19 @@ public class ModeleTest {
     @Test
     public void testSupAttribution() {
         System.out.println("supAttribution");
-        Attribution attribution = null;
+        Classes classe = new Classes("9O", "OBLIVION", 9);
+        Enseignant enseignant = new Enseignant("TOPA", "TOUCHE", "PAS");
+        Attribution attribution = new Attribution(classe, enseignant);
         Modele instance = new Modele();
+        instance.ajoutClasses(classe);
+        enseignant.setRemplacant(classe);
+        instance.ajoutEnseignants(enseignant);
+        instance.ajoutAttribution(attribution);
+        int expResult = -1;
         instance.supAttribution(attribution);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        List<Attribution> mesAttributions = instance.getMesAttributions();
+        int result = mesAttributions.indexOf(attribution);
+        assertEquals("supprimer", expResult, result);
     }
 
     /**

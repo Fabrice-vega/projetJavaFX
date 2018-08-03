@@ -5,17 +5,13 @@
  */
 package projetJava.modele;
 
-import java.util.List;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import projetJava.classesmetier.Attribution;
 import projetJava.classesmetier.Classes;
 import projetJava.classesmetier.Enseignant;
-import projetJava.vue_controleur.ScreensController;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  *
@@ -29,11 +25,11 @@ public class ModeleJDBCTest {
     @Test
     public void testAjoutClasses() {
         System.out.println("ajoutClasses");
-        Classes classe = new Classes("9Z", "DROIT", 8);
-        Modele instance = ModeleJDBC.getInstance();
+        Classes classe = new Classes("0Z", "ZAZA", 0);
+        ModeleJDBC instance = ModeleJDBC.getInstance();
         Boolean expResult = true;
         Boolean result = instance.ajoutClasses(classe);
-        assertEquals( "Ajout", expResult, result);
+        assertEquals("Ajout", expResult, result);
         expResult = false;
         result = instance.ajoutClasses(classe);
         assertEquals("Existe déjà", expResult, result);
@@ -46,13 +42,25 @@ public class ModeleJDBCTest {
     @Test
     public void testSupClasses() {
         System.out.println("supClasses");
-        Classes classe = null;
-        ModeleJDBC instance = null;
-        Boolean expResult = null;
+        Classes classe = new Classes("9Z", "ZETA", 9);
+        ModeleJDBC instance = ModeleJDBC.getInstance();
+        Boolean expResult = true;
+        instance.ajoutClasses(classe);
         Boolean result = instance.supClasses(classe);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("Suppression", expResult, result);
+        instance.ajoutClasses(classe);
+        Enseignant enseignant = new Enseignant("BOTO", "BOBO", "TOTO");
+        enseignant.setTitulaire(classe);
+        instance.ajoutEnseignants(enseignant);
+        Attribution attribution = new Attribution(classe, enseignant);
+        instance.ajoutAttribution(attribution);
+        expResult = false;
+        result = instance.supClasses(classe);
+        assertEquals("Classe attribuée", expResult, result);
+        instance.supAttribution(attribution);
+        enseignant.setTitulaire(null);
+        instance.supEnseignants(enseignant);
+        instance.supClasses(classe);
     }
 
     /**
@@ -74,14 +82,21 @@ public class ModeleJDBCTest {
     @Test
     public void testModifClasse() {
         System.out.println("modifClasse");
-        Classes ancClasse = null;
-        Classes nouvClasse = null;
-        ModeleJDBC instance = null;
-        Boolean expResult = null;
+        Classes ancClasse = new Classes("4D", "DROIT", 4);
+        Classes nouvClasse = new Classes("6D", "DROIT", 6);
+        ModeleJDBC instance = ModeleJDBC.getInstance();
+        Boolean expResult = true;
+        instance.ajoutClasses(ancClasse);
         Boolean result = instance.modifClasse(ancClasse, nouvClasse);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("modification", expResult, result);
+        Classes autreClasse = new Classes("9Z", "ZETA", 9);
+        instance.ajoutClasses(autreClasse);
+        expResult = false;
+        result = instance.modifClasse(autreClasse, nouvClasse);
+        assertEquals("sigle existe déjà", expResult, result);
+        instance.supClasses(ancClasse);
+        instance.supClasses(nouvClasse);
+        instance.supClasses(autreClasse);
     }
 
     /**
@@ -90,13 +105,15 @@ public class ModeleJDBCTest {
     @Test
     public void testAjoutEnseignants() {
         System.out.println("ajoutEnseignants");
-        Enseignant enseignant = null;
-        ModeleJDBC instance = null;
-        Boolean expResult = null;
+        Enseignant enseignant = new Enseignant("ZIZI", "ZIOU", "ZIU");
+        ModeleJDBC instance = ModeleJDBC.getInstance();
+        Boolean expResult = true;
         Boolean result = instance.ajoutEnseignants(enseignant);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("Ajout", expResult, result);
+        expResult = false;
+        result = instance.ajoutEnseignants(enseignant);
+        assertEquals("Existe déjà", expResult, result);
+        instance.supEnseignants(enseignant);
     }
 
     /**
@@ -105,29 +122,46 @@ public class ModeleJDBCTest {
     @Test
     public void testSupEnseignants() {
         System.out.println("supEnseignants");
-        Enseignant enseignant = null;
-        ModeleJDBC instance = null;
-        Boolean expResult = null;
+        Enseignant enseignant = new Enseignant("ZIZI", "ZIOU", "ZIU");
+        ModeleJDBC instance = ModeleJDBC.getInstance();
+        Boolean expResult = true;
+        instance.ajoutEnseignants(enseignant);
         Boolean result = instance.supEnseignants(enseignant);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals("Suppression", expResult, result);
+        Classes classe = new Classes("9Z", "ZETA", 9);
+        instance.ajoutClasses(classe);
+        enseignant.setTitulaire(classe);
+        instance.ajoutEnseignants(enseignant);
+        Attribution attribution = new Attribution(classe, enseignant);
+        instance.ajoutAttribution(attribution);
+        expResult = false;
+        result = instance.supEnseignants(enseignant);
+        assertEquals("Enseignant attribuée", expResult, result);
+        instance.supAttribution(attribution);
+        instance.supEnseignants(enseignant);
+        instance.supClasses(classe);
     }
-    
+
     /**
      * Test of modifEnseignant method, of class ModeleJDBC.
      */
     @Test
     public void testModifEnseignant() {
         System.out.println("modifEnseignant");
-        Enseignant ancEnseignant = null;
-        Enseignant nouvEnseignant = null;
-        ModeleJDBC instance = null;
-        Boolean expResult = null;
+        Enseignant ancEnseignant = new Enseignant("DUPA", "DURAND", "PAUL");
+        Enseignant nouvEnseignant = new Enseignant("ZUZU", "ZUOU", "ZUU");
+        ModeleJDBC instance = ModeleJDBC.getInstance();
+        Boolean expResult = true;
         Boolean result = instance.modifEnseignant(ancEnseignant, nouvEnseignant);
-        assertEquals(expResult, result);
+        assertEquals("modification", expResult, result);
+        Enseignant autreEnseignant = new Enseignant("TOPA", "TOUCHE", "PAS");
+        instance.ajoutEnseignants(autreEnseignant);
+        expResult = false;
+        result = instance.modifEnseignant(autreEnseignant, nouvEnseignant);
+        assertEquals("id_prof existe déjà", expResult, result);
+        instance.modifEnseignant(nouvEnseignant, new Enseignant("DUPA", "DURAND", "PAUL"));
     }
-    
+
     /**
      * Test of getEnseignant method, of class ModeleJDBC.
      */

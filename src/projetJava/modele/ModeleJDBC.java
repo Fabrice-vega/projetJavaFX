@@ -166,9 +166,6 @@ public class ModeleJDBC extends Modele {
             cs.executeUpdate();
             return true;
         } catch (SQLIntegrityConstraintViolationException doublon) {
-            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Classe existant");
-            alertDoublon.setTitle("Erreur...");
-            alertDoublon.show();
             return false;
         } catch (SQLException sqle) {
             System.err.println("Erreur " + sqle);
@@ -301,9 +298,6 @@ public class ModeleJDBC extends Modele {
             cs.executeUpdate();
             return true;
         } catch (SQLIntegrityConstraintViolationException doublon) {
-            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Enseignant existant");
-            alertDoublon.setTitle("Erreur...");
-            alertDoublon.show();
             return false;
         } catch (SQLException sqle) {
             System.err.println("Erreur " + sqle);

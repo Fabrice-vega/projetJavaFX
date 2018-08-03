@@ -139,9 +139,6 @@ public class Modele {
 
     public Boolean ajoutEnseignants(Enseignant enseignant) {
         if (mesEnseignants.contains(enseignant)) {
-            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Enseignant déjà créée");
-            alertDoublon.setTitle("Erreur...");
-            alertDoublon.show();
             return false;
         }
         mesEnseignants.add(enseignant);
@@ -151,9 +148,6 @@ public class Modele {
     public Boolean modifEnseignant(Enseignant ancEnseignant, Enseignant nouvEnseignant) {
         int index = mesEnseignants.indexOf(ancEnseignant);
         if (mesEnseignants.contains(nouvEnseignant) && !nouvEnseignant.getId_prof().equals(ancEnseignant.getId_prof())) {
-            Alert alertDoublon = new Alert(Alert.AlertType.ERROR, "Enseignant déjà existant");
-            alertDoublon.setTitle("Erreur...");
-            alertDoublon.show();
             return false;
         }
         mesEnseignants.set(index, nouvEnseignant);
