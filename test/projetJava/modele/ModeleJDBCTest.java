@@ -5,12 +5,13 @@
  */
 package projetJava.modele;
 
+import java.util.List;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import projetJava.classesmetier.Attribution;
 import projetJava.classesmetier.Classes;
 import projetJava.classesmetier.Enseignant;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
@@ -202,12 +203,16 @@ public class ModeleJDBCTest {
     @Test
     public void testModifAttribution() {
         System.out.println("modifAttribution");
-        Attribution attribution = null;
+        Classes classe = new Classes("9O", "OBLIVION", 9);
+        Enseignant enseignant = new Enseignant("TOPA", "TOUCHE", "PAS");
+        Attribution attribution = new Attribution(classe, enseignant);
+        ModeleJDBC instance = ModeleJDBC.getInstance();
+        instance.ajoutClasses(classe);
+        enseignant.setTitulaire(classe);
+        instance.ajoutEnseignants(enseignant);
+        instance.ajoutAttribution(attribution);
         boolean titulaire = false;
-        ModeleJDBC instance = null;
         instance.modifAttribution(attribution, titulaire);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -216,10 +221,18 @@ public class ModeleJDBCTest {
     @Test
     public void testSupAttribution() {
         System.out.println("supAttribution");
-        Attribution attribution = null;
-        ModeleJDBC instance = null;
+        Classes classe = new Classes("9O", "OBLIVION", 9);
+        Enseignant enseignant = new Enseignant("TOPA", "TOUCHE", "PAS");
+        Attribution attribution = new Attribution(classe, enseignant);
+        ModeleJDBC instance = ModeleJDBC.getInstance();
+        instance.ajoutClasses(classe);
+        enseignant.setRemplacant(classe);
+        instance.ajoutEnseignants(enseignant);
+        instance.ajoutAttribution(attribution);
+        int expResult = -1;
         instance.supAttribution(attribution);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        List<Attribution> mesAttributions = instance.getMesAttributions();
+        int result = mesAttributions.indexOf(attribution);
+        assertEquals("supprimer", expResult, result);
     }
 }

@@ -192,11 +192,17 @@ public class ModeleTest {
     @Test
     public void testModifAttribution() {
         System.out.println("modifAttribution");
-        Attribution attribution = null;
-        boolean titulaire = false;
+        Classes classe = new Classes("9O", "OBLIVION", 9);
+        Enseignant enseignant = new Enseignant("TOPA", "TOUCHE", "PAS");
+        Attribution attribution = new Attribution(classe, enseignant);
         Modele instance = new Modele();
+        instance.ajoutClasses(classe);
+        enseignant.setTitulaire(classe);
+        instance.ajoutEnseignants(enseignant);
+        instance.ajoutAttribution(attribution);
+        boolean titulaire = false;
         instance.modifAttribution(attribution, titulaire);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        
     }
 }
