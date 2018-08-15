@@ -53,6 +53,18 @@ public class Attribution {
     public String toString() {
         return "Attribution : \n" + "classe : " + classe + ", enseignant : " + enseignant;
     }
+    
+    @Override
+    public boolean equals (final Object o) {
+
+        if ( this == o ) return true;
+        if ( o == null || getClass() != o.getClass() ) return false;
+
+        Attribution that = ( Attribution ) o;
+
+        if ( classe != null ? !classe.equals(that.classe) : that.classe != null ) return false;
+        return enseignant != null ? enseignant.equals(that.enseignant) : that.enseignant == null;
+    }
 
     /**
      * Méthode get de la classe

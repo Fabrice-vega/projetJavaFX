@@ -203,16 +203,26 @@ public class ModeleJDBCTest {
     @Test
     public void testModifAttribution() {
         System.out.println("modifAttribution");
-        Classes classe = new Classes("9O", "OBLIVION", 9);
+        Classes classe = new Classes("8O", "OBLIVION", 8);
         Enseignant enseignant = new Enseignant("TOPA", "TOUCHE", "PAS");
         Attribution attribution = new Attribution(classe, enseignant);
         ModeleJDBC instance = ModeleJDBC.getInstance();
+        Attribution expresult = attribution;
         instance.ajoutClasses(classe);
-        enseignant.setTitulaire(classe);
+        enseignant.setRemplacant(classe);
         instance.ajoutEnseignants(enseignant);
         instance.ajoutAttribution(attribution);
-        boolean titulaire = false;
-        instance.modifAttribution(attribution, titulaire);
+        instance.modifAttribution(attribution, false);
+        List<Attribution> mesAttributions = instance.getMesAttributions();
+        Attribution result = null;
+        for (Attribution attr : mesAttributions ) {
+            if ( attr.equals(attribution) ) {
+                result = attr;
+            }
+        }
+        assertEquals("modif", expresult, result);
+        instance.supAttribution(attribution);
+        instance.supClasses(classe);
     }
 
     /**
@@ -227,7 +237,6 @@ public class ModeleJDBCTest {
         ModeleJDBC instance = ModeleJDBC.getInstance();
         instance.ajoutClasses(classe);
         enseignant.setRemplacant(classe);
-        instance.ajoutEnseignants(enseignant);
         instance.ajoutAttribution(attribution);
         int expResult = -1;
         instance.supAttribution(attribution);
